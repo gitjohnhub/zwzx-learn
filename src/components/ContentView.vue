@@ -10,17 +10,22 @@
     <a-image v-for="(img_src,index) in img_list" :width="200" :src="img_src"></a-image>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref ,watch} from 'vue';
 import {bangban_content} from '@/utils/bangban_content'
-import bb1_1 from '@/assets/bb1_1.jpg'
 const value1 = ref<string>('电子营业执照申请');
 const img_list = ref([])
 const getImageUrl = (img_name:string) => {
         	// 里面可以根据需求写逻辑
             return new URL(`../assets/${img_name}.jpg`, import.meta.url).href;
         };
+watch(value1,(newValue,oldValue)=>{
+  img_list.value = []
+  for(let imgsrc of  bangban_content[value1.value]['imgsrc']){
+   img_list.value.push(getImageUrl(imgsrc))
+  }
+})
 for(let imgsrc of  bangban_content[value1.value]['imgsrc']){
-  img_list.value.push(getImageUrl(imgsrc))
-}
+   img_list.value.push(getImageUrl(imgsrc))
+  }
 
 </script>
