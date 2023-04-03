@@ -10,10 +10,6 @@ const size =  ref<SizeType>('large')
     章程修正案
   </a-button></RouterLink>
 
-  <RouterLink to="/Content/Shipinxinban"><a-button type="normal" shape="round" :size="size">
-    食品经营许可证新办
-  </a-button></RouterLink>
-
   <RouterView />
 </template>
 

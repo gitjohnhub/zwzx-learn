@@ -1,5 +1,4 @@
 <template>
-  <h1> 章程修正案生成下载</h1>
   <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
     <a-form-item label="公司名称：">
       <a-input v-model:value="formState.company_name" placeholder="公司名称"></a-input>
@@ -49,7 +48,7 @@ const formState = reactive({
     origin_zhusuo: '',
     modify_zhusuo: '',
     company_name: '',
-    checkedList: ['经营范围', '住所'],
+    checkedList: ['经营范围'],
     location:'第二章第三条',
     listContent:[]
   });

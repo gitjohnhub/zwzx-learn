@@ -24,23 +24,6 @@ const router = createRouter({
       path: '/Content',
       name: 'Content',
       component: () => import('@/components/ContentView.vue'),
-      children:[
-        {
-          path:"/",
-          name:"Dianzizhizhao",
-          component:() => import('@/components/ChildView/DianzizhizhaoView.vue'),
-        },
-        {
-          path:"Dianzizhizhao",
-          name:"Dianzizhizhao",
-          component:() => import('@/components/ChildView/DianzizhizhaoView.vue'),
-        },
-        {
-          path:"Shipinxinban",
-          name:"Shipinxinban",
-          component:() => import('@/components/ChildView/ShipinxinbanView.vue'),
-        }
-      ]
     },
     {
       path: '/Shuiwu',
