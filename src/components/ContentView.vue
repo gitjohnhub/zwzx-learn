@@ -13,14 +13,14 @@
 import { ref } from 'vue';
 import {bangban_content} from '@/utils/bangban_content'
 import bb1_1 from '@/assets/bb1_1.jpg'
-const img_list = ref([])
-const getImageUrl = () =>{
-  for(let imgsrc of  bangban_content[value1.value]['imgsrc']){
-    const img_url= new URL('../assets/'+imgsrc+'.jpg', import.meta.url).href
-    img_list.value.push(img_url)
-  }
-  return img_list
-
-  };
 const value1 = ref<string>('电子营业执照申请');
+const img_list = ref([])
+const getImageUrl = (img_name:string) => {
+        	// 里面可以根据需求写逻辑
+            return new URL(`../assets/${img_name}.jpg`, import.meta.url).href;
+        };
+for(let imgsrc of  bangban_content[value1.value]['imgsrc']){
+  img_list.value.push(getImageUrl(imgsrc))
+}
+
 </script>
