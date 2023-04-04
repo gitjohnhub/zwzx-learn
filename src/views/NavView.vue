@@ -50,7 +50,7 @@
         <SettingOutlined />
       </template>
       <template #title>Navigation Three</template>
-      <a-menu-item key="9">Option 9</a-menu-item>
+      <RouterLink to='/BangbanData'><a-menu-item key="5">bangbandata</a-menu-item></RouterLink>
       <a-menu-item key="10">Option 10</a-menu-item>
       <a-menu-item key="11">Option 11</a-menu-item>
       <a-menu-item key="12">Option 12</a-menu-item>

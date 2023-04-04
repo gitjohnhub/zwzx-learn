@@ -18,6 +18,11 @@ const router = createRouter({
           name:"Zhangchengxiuzhengan",
           component:() => import('@/components/ChildView/ZcxzaView.vue'),
         },
+        {
+          path:"gudongjueding",
+          name:"Gudongjueding",
+          component:() => import('@/components/ChildView/GudongjuedingView.vue'),
+        },
       ]
     },
     {
@@ -39,6 +44,11 @@ const router = createRouter({
       path: '/Minzhen',
       name: 'Minzhen',
       component: () => import('@/components/MinzhenView.vue')
+    },
+    {
+      path: '/BangbanData',
+      name: 'BangbanData',
+      component: () => import('@/components/BangbanDataView.vue')
     },
 
   ]

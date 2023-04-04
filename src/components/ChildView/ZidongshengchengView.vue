@@ -9,6 +9,9 @@ const size =  ref<SizeType>('large')
   <RouterLink to="/Zidongshengcheng/zcxza"><a-button type="normal" shape="round" :size="size">
     章程修正案
   </a-button></RouterLink>
+  <RouterLink to="/Zidongshengcheng/gudongjueding"><a-button type="normal" shape="round" :size="size">
+    股东决定
+  </a-button></RouterLink>
 
   <RouterView />
 </template>

@@ -1,6 +1,6 @@
 <template>
   <a-radio-group v-model:value="value1" size="large">
-    <a-radio-button  v-for="item,key in bangban_content" :value="key">{{ key }}</a-radio-button>
+    <a-radio-button button-style="solid" v-for="item,key in bangban_content" :value="key">{{ key }}</a-radio-button>
   </a-radio-group>
   <h1>{{ value1}}</h1>
 

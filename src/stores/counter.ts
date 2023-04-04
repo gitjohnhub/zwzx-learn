@@ -1,7 +1,26 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
+import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
-
+import { supabase } from '@/api/supabase'
+import type {bangban_data_type} from '@/utils/type'
 export const useDataStore = defineStore('mydata', () => {
+  const bangban_data= ref([])
+  async function getBangban_data(){
+    await supabase
+      .from('bangban')
+      .select('*')
+      .then((res)=>{
+        console.log(res.data)
+        bangban_data.value = res.data
+      })
+  }
+  async function insertBangban_data(insert_data:{business:string,submitDate:string}) {
+    const { data, error } = await supabase
+    .from('bangban')
+    .insert([
+      { business: insert_data.business, submitDate: insert_data.submitDate},
+    ])
+  }
   const data = {
     "banli_url":{
       "id":'https://zwdt.sh.gov.cn/govPortals/bsfw/item/'
@@ -134,6 +153,6 @@ export const useDataStore = defineStore('mydata', () => {
     ],
   }
 
-  return { data }
+  return { data ,bangban_data,getBangban_data,insertBangban_data}
 })
 
