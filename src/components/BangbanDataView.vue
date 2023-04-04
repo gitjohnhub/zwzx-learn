@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import {useDataStore} from '@/stores/counter'
 import { onBeforeMount,ref } from 'vue';
-import type { FormProps } from 'ant-design-vue';
-import { func } from 'vue-types';
+import { message } from 'ant-design-vue';
 
 const dataStore = useDataStore()
 
@@ -23,9 +22,17 @@ function submitData(){
     business.push(formState.value[key])
   }
   const business_str = business.join(',')
-  const submitDate = new Date().toString()
-  const submitData = {business:business_str,submitDate:submitDate}
-  dataStore.insertBangban_data(submitData)
+  const submitDate = new Date().toLocaleDateString()
+  const submitData = {'business':business_str,'submitDate':submitDate,'id':'0'}
+  if (dataStore.isTodayDataExists() == null){
+    console.log('insert')
+    dataStore.insertBangban_data(submitData)
+  }else{
+    console.log('update')
+    submitData['id'] = dataStore.isTodayDataExists()
+    dataStore.updateBangban_data(submitData)
+  }
+  dataStore.getBangban_data()
 }
 const columns = [
           {
@@ -43,10 +50,14 @@ const columns = [
             dataIndex: 'submitDate',
             key: 'submitDate',
           },
+          {
+            title: 'user',
+            dataIndex: 'user',
+            key: 'user',
+          },
         ]
 onBeforeMount(()=>{
    getData()
-   console.log(`page data ${dataStore.bangban_data}`)
 })
 async function getData(){
   await dataStore.getBangban_data()

@@ -10,16 +10,47 @@ export const useDataStore = defineStore('mydata', () => {
       .from('bangban')
       .select('*')
       .then((res)=>{
-        console.log(res.data)
         bangban_data.value = res.data
       })
   }
-  async function insertBangban_data(insert_data:{business:string,submitDate:string}) {
-    const { data, error } = await supabase
+  // const insertBangban_data = (async (insert_data:{'business':string,'submitDate':string}) =>{
+  //   return await supabase
+  //   .from('bangban')
+  //   .insert([
+  //     { business: insert_data.business, submitDate: insert_data.submitDate},
+  //   ])
+  // })
+  async function insertBangban_data(insert_data:{'business':string,'submitDate':string,'id':number}) {
+    await supabase
     .from('bangban')
     .insert([
       { business: insert_data.business, submitDate: insert_data.submitDate},
     ])
+    .then(()=>{
+      getBangban_data()
+    })
+  }
+  async function updateBangban_data(insert_data:{'id':string,'business':string,'submitDate':string}) {
+    await supabase
+      .from('bangban')
+      .update({ business: insert_data.business})
+      .eq('id',  insert_data.id)
+      .then(()=>{
+        getBangban_data()
+      }
+      )
+  }
+  function isTodayDataExists():number| null{
+    console.log(new Date().toLocaleDateString())
+    for (const item of bangban_data.value){
+        const itemDate = new Date(item.submitDate).toLocaleDateString()
+        // console.log(itemDate)
+        if (itemDate == new Date().toLocaleDateString()) {
+          console.log('pipei')
+          return item.id
+        }
+    }
+    return null
   }
   const data = {
     "banli_url":{
@@ -153,6 +184,11 @@ export const useDataStore = defineStore('mydata', () => {
     ],
   }
 
-  return { data ,bangban_data,getBangban_data,insertBangban_data}
+  return { data ,
+    bangban_data,
+    getBangban_data,
+    insertBangban_data,
+    updateBangban_data,
+    isTodayDataExists}
 })
 
