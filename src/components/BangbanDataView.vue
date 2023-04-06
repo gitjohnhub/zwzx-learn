@@ -85,12 +85,13 @@ const formState = ref({
 });
 function submitData(){
   const business = []
+  // let key: keyof formState
   for (let key in formState.value){
     business.push(formState.value[key])
   }
   const business_str = business.join(',')
   const submitDate = new Date().toLocaleDateString()
-  const submitData = {'business':business_str,'submitDate':submitDate,'id':'0'}
+  const submitData = {'business':business_str,'submitDate':submitDate,'id':0}
   if (dataStore.isTodayDataExists() == null){
     console.log('insert')
     dataStore.insertBangban_data(submitData).then(res=>{
@@ -98,7 +99,7 @@ function submitData(){
     })
   }else{
     console.log('update')
-    submitData['id'] = dataStore.isTodayDataExists()
+    submitData['id'] = dataStore.isTodayDataExists() as number
     dataStore.updateBangban_data(submitData).then(res=>{
       message.info("今日数据更新成功")
     })

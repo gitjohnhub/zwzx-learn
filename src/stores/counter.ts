@@ -32,7 +32,7 @@ export const useDataStore = defineStore('mydata', () => {
       getBangban_data()
     })
   }
-  async function updateBangban_data(insert_data:{'id':string,'business':string,'submitDate':string}) {
+  async function updateBangban_data(insert_data:{'id':number,'business':string,'submitDate':string}) {
     console.log(insert_data.id)
     return await supabase
       .from('bangban')
