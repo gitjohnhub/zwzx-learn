@@ -9,12 +9,6 @@ export default function useAuthUser() {
     return await supabase.auth.signInWithPassword({
       email: email,
       password: password,
-    }).then(res=>{
-      console.log(res)
-      if (res.data.user != null){
-        console.log(res.data.user)
-        user.value = res.data.user.email!
-      }
     })
   };
   /**

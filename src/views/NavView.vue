@@ -39,21 +39,14 @@
       </template>
       <template #title>章程范本</template>
       <RouterLink to='/Zidongshengcheng'><a-menu-item key="5">自动生成</a-menu-item></RouterLink>
-      <a-menu-item key="6">Option 6</a-menu-item>
-      <a-sub-menu key="sub3" title="Submenu">
-        <a-menu-item key="7">Option 7</a-menu-item>
-        <a-menu-item key="8">Option 8</a-menu-item>
-      </a-sub-menu>
     </a-sub-menu>
     <a-sub-menu key="sub4">
       <template #icon>
         <SettingOutlined />
       </template>
-      <template #title>Navigation Three</template>
-      <RouterLink to='/BangbanData'><a-menu-item key="5">bangbandata</a-menu-item></RouterLink>
-      <a-menu-item key="10">Option 10</a-menu-item>
-      <a-menu-item key="11">Option 11</a-menu-item>
-      <a-menu-item key="12">Option 12</a-menu-item>
+      <template #title>工作人员入口</template>
+      <RouterLink to='/BangbanData'><a-menu-item key="5">帮办数据上报</a-menu-item></RouterLink>
+      <!-- <a-menu-item key="10">Option 10</a-menu-item> -->
     </a-sub-menu>
   </a-menu>
 </template>

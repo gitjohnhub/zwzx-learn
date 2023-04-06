@@ -1,5 +1,5 @@
 <template>
-  <a-card title="工作人员登陆" style="width: 500px;margin-top: 300px;">
+  <a-card title="工作人员登陆" style="width: 500px; margin-top: 300px">
     <a-form
       :model="formState"
       name="basic"
@@ -12,7 +12,7 @@
         name="username"
         :rules="[{ required: false, message: 'Please input your username!' }]"
       >
-        <a-input v-model:value="formState.username"  suffix="@zwzx.com"/>
+        <a-input v-model:value="formState.username" suffix="@zwzx.com" />
       </a-form-item>
 
       <a-form-item
@@ -32,29 +32,31 @@
 <script lang="ts" setup>
 import { defineComponent, reactive } from 'vue';
 import { message } from 'ant-design-vue';
-import useAuthUser from '@/auth/useAuthUser'
+import useAuthUser from '@/auth/useAuthUser';
 import { useRouter } from 'vue-router';
 import { useDataStore } from '@/stores/counter';
-const dataStore = useDataStore()
-const router = useRouter()
-const user = useAuthUser()
+const dataStore = useDataStore();
+const router = useRouter();
+const user = useAuthUser();
 const formState = {
   username: '',
   password: '',
 };
 
-const login = async() => {
-  console.log('login button')
-  await user.login(formState.username+'@zwzx.com',formState.password)
-  // Perform login logic and store user information in local storage
-  // localStorage.setItem('user', JSON.stringify({ username: formData.username }));
-  // // Redirect to homepage\
-  // console.log(user.user)
-  if (user.user.value != ""){
-    dataStore.user = user.user.value
-    router.push({name:'BangbanData'});
-  }else{
-    message.info("用户名或密码错误，联系管理员")
+const login = async () => {
+  if (formState.username == '' || formState.password == '') {
+    message.info('请输入用户名和密码');
+  } else {
+    await user.login(formState.username + '@zwzx.com', formState.password).then(res=>{
+      if (res.data.user != null){
+        console.log(res.data.user)
+        user.user.value = res.data.user.email!
+        dataStore.user = res.data.user.email!;
+        router.push({ name: 'BangbanData' });
+      }else {
+        message.info('用户名或密码错误，联系管理员');
+      }
+    })
   }
-};
+}
 </script>

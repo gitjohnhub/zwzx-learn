@@ -55,8 +55,11 @@ export const useDataStore = defineStore('mydata', () => {
     return null
   }
   async function signOut() {
-    authUser.logout()
+    authUser.logout().then(res=>{
+      console.log(res)
+    })
     user.value =""
+    authUser.user.value = ""
   }
   const data = {
     "banli_url":{
