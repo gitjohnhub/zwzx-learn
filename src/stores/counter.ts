@@ -1,10 +1,12 @@
 import { ref } from 'vue'
-import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { supabase } from '@/api/supabase'
 import type {bangban_data_type} from '@/utils/type'
+import useAuthUser from '@/auth/useAuthUser'
+const authUser = useAuthUser()
 export const useDataStore = defineStore('mydata', () => {
   const bangban_data= ref([])
+  const user = ref("")
   async function getBangban_data(){
     await supabase
       .from('bangban')
@@ -21,34 +23,40 @@ export const useDataStore = defineStore('mydata', () => {
   //   ])
   // })
   async function insertBangban_data(insert_data:{'business':string,'submitDate':string,'id':number}) {
-    await supabase
+    return await supabase
     .from('bangban')
     .insert([
-      { business: insert_data.business, submitDate: insert_data.submitDate},
+      { business: insert_data.business, submitDate: insert_data.submitDate,user:user.value},
     ])
-    .then(()=>{
+    .then((res)=>{
       getBangban_data()
     })
   }
   async function updateBangban_data(insert_data:{'id':string,'business':string,'submitDate':string}) {
-    await supabase
+    console.log(insert_data.id)
+    return await supabase
       .from('bangban')
       .update({ business: insert_data.business})
       .eq('id',  insert_data.id)
-      .then(()=>{
+      .then((res)=>{
         getBangban_data()
       }
       )
   }
   function isTodayDataExists():number| null{
     for (const item of bangban_data.value){
+      console.log(bangban_data.value)
         const itemDate = new Date(item.submitDate).toLocaleDateString()
-        if (itemDate == new Date().toLocaleDateString()) {
+        if (itemDate == new Date().toLocaleDateString() && item.user == user.value ) {
           console.log('pipei')
           return item.id
         }
     }
     return null
+  }
+  async function signOut() {
+    authUser.logout()
+    user.value =""
   }
   const data = {
     "banli_url":{
@@ -182,7 +190,10 @@ export const useDataStore = defineStore('mydata', () => {
     ],
   }
 
-  return { data ,
+  return {
+    data,
+    user,
+    signOut,
     bangban_data,
     getBangban_data,
     insertBangban_data,

@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import useAuthUser from '@/auth/useAuthUser'
+const user = useAuthUser()
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -63,13 +65,19 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  const user = JSON.parse(localStorage.getItem('user'))
-  if (to.meta.requiresAuth == true && !user) {
-    next('/login')
+  // const user = JSON.parse(localStorage.getItem('user'))
+  if (to.meta.requiresAuth == true) {
+    if (user.user.value== ""){
+      console.log(user.user.value )
+      return {name:'Login'}
+    }else{
+      console.log(user.user.value )
+      return true
+    }
   } else {
-    next()
+    return true
   }
   },
-})
+)
 
 export default router
