@@ -41,10 +41,8 @@ export const useDataStore = defineStore('mydata', () => {
       )
   }
   function isTodayDataExists():number| null{
-    console.log(new Date().toLocaleDateString())
     for (const item of bangban_data.value){
         const itemDate = new Date(item.submitDate).toLocaleDateString()
-        // console.log(itemDate)
         if (itemDate == new Date().toLocaleDateString()) {
           console.log('pipei')
           return item.id
