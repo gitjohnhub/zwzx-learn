@@ -48,10 +48,28 @@ const router = createRouter({
     {
       path: '/BangbanData',
       name: 'BangbanData',
+      meta:{
+        requiresAuth:true
+      },
       component: () => import('@/components/BangbanDataView.vue')
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: () => import('@/components/LoginView.vue')
     },
 
   ]
+})
+
+router.beforeEach((to, from) => {
+  const user = JSON.parse(localStorage.getItem('user'))
+  if (to.meta.requiresAuth == true && !user) {
+    next('/login')
+  } else {
+    next()
+  }
+  },
 })
 
 export default router
