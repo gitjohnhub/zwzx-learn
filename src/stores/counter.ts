@@ -26,7 +26,7 @@ export const useDataStore = defineStore('mydata', () => {
     return await supabase
     .from('bangban')
     .insert([
-      { business: insert_data.business, submitDate: insert_data.submitDate,user:user.value},
+      { business: insert_data.business, submitDate: insert_data.submitDate,email:user.value},
     ])
     .then((res)=>{
       getBangban_data()

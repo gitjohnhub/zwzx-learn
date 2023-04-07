@@ -130,8 +130,8 @@ const columns = [
           },
           {
             title: 'user',
-            dataIndex: 'user',
-            key: 'user',
+            dataIndex: 'email',
+            key: 'email',
           },
         ]
 onBeforeMount(()=>{
