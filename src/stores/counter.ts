@@ -5,8 +5,8 @@ import type {bangban_data_type} from '@/utils/type'
 import useAuthUser from '@/auth/useAuthUser'
 const authUser = useAuthUser()
 export const useDataStore = defineStore('mydata', () => {
-  const bangban_data= ref([])
-  const todayData = ref([])
+  const bangban_data= ref<any>([])
+  const todayData = ref<any>([])
   const user = ref("")
   const today = new Date().toISOString().slice(0,10)
   async function getBangban_data(){
@@ -15,7 +15,7 @@ export const useDataStore = defineStore('mydata', () => {
       .select('*')
       .then((res)=>{
         console.log(res.data)
-        bangban_data.value = res.data
+        bangban_data.value = res!.data!
         todayData.value = res.data!.filter(item=>{
           // console.log(item.submitDate)
           return item.submitDate === today && item.email === user.value

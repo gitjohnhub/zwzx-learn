@@ -13,7 +13,7 @@
 import { ref ,watch} from 'vue';
 import {bangban_content} from '@/utils/bangban_content'
 const value1 = ref<string>('电子营业执照申请');
-const img_list = ref([])
+const img_list = ref<any>([])
 const getImageUrl = (img_name:string) => {
         	// 里面可以根据需求写逻辑
             return new URL(`../assets/${img_name}.jpg`, import.meta.url).href;

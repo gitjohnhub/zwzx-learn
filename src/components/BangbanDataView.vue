@@ -74,16 +74,27 @@ import { onBeforeMount,ref } from 'vue';
 import { message } from 'ant-design-vue';
 import router from '@/router';
 const dataStore = useDataStore()
-const formState = ref({
-      'biangeng': 0,
-      'shipin': 0,
-      'jiulei':0,
-      'xinshe':0,
-      'qita':0,
-      'shuiwu':0,
-      'weijianwei':0,
-      'wenlv':0,
-      'qita2':0
+interface FormState {
+  biangeng: number,
+      shipin: number,
+      jiulei:number,
+      xinshe:number,
+      qita:number,
+      shuiwu:number,
+      weijianwei:number,
+      wenlv:number,
+      qita2:number
+}
+const formState = ref<FormState>({
+      biangeng: 0,
+      shipin: 0,
+      jiulei:0,
+      xinshe:0,
+      qita:0,
+      shuiwu:0,
+      weijianwei:0,
+      wenlv:0,
+      qita2:0
 });
 function getTodayData(){
   console.log(dataStore.todayData[0]?.['business']?.[0])
@@ -99,8 +110,8 @@ function getTodayData(){
 }
 function submitData(){
   const business = []
-  // let key: keyof formState
-  for (let key in formState.value){
+  let key: keyof FormState
+  for (key in formState.value){
     business.push(formState.value[key])
   }
   const business_str = business.join(',')
