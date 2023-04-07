@@ -64,7 +64,15 @@
     </a-card>
   </a-row>
 
-  <a-table :dataSource="dataStore.bangban_data" :columns="columns" />
+  <a-table :dataSource="dataStore.bangban_data" :columns="columns" >
+    <template #bodyCell="{ column, record }">
+      <template v-if="column.key === 'email'">
+          <a-tag :color="record.email == 'qinyinqi@zwzx.com'? 'red': record.email.length == 'zhaozihao@zwzx.com'?'geekblue':'green'">
+            {{ record.email }}
+          </a-tag>
+        </template>
+    </template>
+  </a-table>
 </template>
 
 
@@ -152,6 +160,9 @@ const columns = [
             title: 'submitDate',
             dataIndex: 'submitDate',
             key: 'submitDate',
+            sorter: (a: any, b: any) => new Date(a.submitDate) > new Date(b.submitDate),
+            sortDirections: ['descend'],
+            defaultSortOrder: 'descend',
           },
           {
             title: 'user',
