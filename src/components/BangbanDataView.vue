@@ -67,7 +67,7 @@
   <a-table :dataSource="dataStore.bangban_data" :columns="columns" >
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'email'">
-          <a-tag :color="record.email == 'qinyinqi@zwzx.com'? 'red': record.email.length == 'zhaozihao@zwzx.com'?'geekblue':'green'">
+          <a-tag :color="record.email == dataStore.user ?'red':'green'">
             {{ record.email }}
           </a-tag>
         </template>
