@@ -6,14 +6,23 @@ import useAuthUser from '@/auth/useAuthUser'
 const authUser = useAuthUser()
 export const useDataStore = defineStore('mydata', () => {
   const bangban_data= ref([])
+  const todayData = ref([])
   const user = ref("")
+  const today = new Date().toISOString().slice(0,10)
   async function getBangban_data(){
     await supabase
       .from('bangban')
       .select('*')
       .then((res)=>{
+        console.log(res.data)
         bangban_data.value = res.data
+        todayData.value = res.data!.filter(item=>{
+          // console.log(item.submitDate)
+          return item.submitDate === today && item.email === user.value
+        })
       })
+    console.log(todayData.value)
+
   }
   // const insertBangban_data = (async (insert_data:{'business':string,'submitDate':string}) =>{
   //   return await supabase
@@ -43,11 +52,12 @@ export const useDataStore = defineStore('mydata', () => {
       }
       )
   }
+
   function isTodayDataExists():number| null{
     for (const item of bangban_data.value){
       console.log(bangban_data.value)
         const itemDate = new Date(item.submitDate).toLocaleDateString()
-        if (itemDate == new Date().toLocaleDateString() && item.user == user.value ) {
+        if (itemDate == new Date().toLocaleDateString() && item.email == user.value ) {
           console.log('pipei')
           return item.id
         }
@@ -201,6 +211,7 @@ export const useDataStore = defineStore('mydata', () => {
     getBangban_data,
     insertBangban_data,
     updateBangban_data,
+    todayData,
     isTodayDataExists}
 })
 

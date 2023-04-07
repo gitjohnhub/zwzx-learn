@@ -4,6 +4,9 @@
     <a-col :span="4">
       <a-button @click="SignOut">登出</a-button>
     </a-col>
+    <a-col :span="4">
+      <a-button @click="getTodayData">获取今日已填报数据</a-button>
+    </a-col>
   </a-row>
   <a-row>
     <a-card>
@@ -71,10 +74,9 @@ import { onBeforeMount,ref } from 'vue';
 import { message } from 'ant-design-vue';
 import router from '@/router';
 const dataStore = useDataStore()
-
 const formState = ref({
       'biangeng': 0,
-      'shipin': '0',
+      'shipin': 0,
       'jiulei':0,
       'xinshe':0,
       'qita':0,
@@ -83,6 +85,18 @@ const formState = ref({
       'wenlv':0,
       'qita2':0
 });
+function getTodayData(){
+  console.log(dataStore.todayData[0]?.['business']?.[0])
+  formState.value.biangeng = dataStore.todayData[0]?.['business']?.[0] ?? 0
+  formState.value.shipin = dataStore.todayData[0]?.['business']?.[2] ?? 0
+  formState.value.jiulei = dataStore.todayData[0]?.['business']?.[4] ?? 0
+  formState.value.xinshe = dataStore.todayData[0]?.['business']?.[6] ?? 0
+  formState.value.qita = dataStore.todayData[0]?.['business']?.[8] ?? 0
+  formState.value.shuiwu = dataStore.todayData[0]?.['business']?.[10] ?? 0
+  formState.value.weijianwei = dataStore.todayData[0]?.['business']?.[12] ?? 0
+  formState.value.wenlv = dataStore.todayData[0]?.['business']?.[14] ?? 0
+  formState.value.qita2 = dataStore.todayData[0]?.['business']?.[16] ?? 0
+}
 function submitData(){
   const business = []
   // let key: keyof formState
