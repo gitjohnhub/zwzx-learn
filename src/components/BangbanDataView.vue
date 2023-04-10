@@ -121,6 +121,8 @@ function submitData(){
   const business = []
   let key: keyof FormState
   for (key in formState.value){
+    console.log(formState.value[key])
+    formState.value[key] =  formState.value[key]=='' ? 0 : formState.value[key]
     business.push(formState.value[key])
   }
   const business_str = business.join(',')
