@@ -18,9 +18,9 @@ export function generate_firstLine_description(company_category:string){
 export function generate_tiaokuan(tiaokuan:string,origin_content:string,modify_content:string){
   switch (tiaokuan){
     case '经营范围':
-      return "<li>章程第二章第三条"+"原为："+"<span style='text-decoration:underline;'>"+origin_content+"</span>"+"</p><p style='font-size:16px;text-indent:2em;'>现将该条修改为："+"<span style='text-decoration:underline;'>"+modify_content+"</span></p>"+"<p style='font-size:16px;'></li>"
+      return "章程第二章第三条"+"原为："+"<span style='text-decoration:underline;'>"+origin_content+"</span>"+"</p><p style='font-size:16px;text-indent:2em;'>现将该条修改为："+"<span style='text-decoration:underline;'>"+modify_content+"</span></p>"+"<p style='font-size:16px;'>"
     case  '住所':
-      return "<li>章程第一章第二条"+"原为："+"<span style='text-decoration:underline;'>公司住所："+origin_content+"</span>"+"</p><p style='font-size:16px;text-indent:2em;'>现将该条修改为："+"<span style='text-decoration:underline;'>公司住所："+modify_content+"</span></p>"+"<p style='font-size:16px;'></li>"
+      return "章程第一章第二条"+"原为："+"<span style='text-decoration:underline;'>公司住所："+origin_content+"</span>"+"</p><p style='font-size:16px;text-indent:2em;'>现将该条修改为："+"<span style='text-decoration:underline;'>公司住所："+modify_content+"</span></p>"+"<p style='font-size:16px;'>"
     default:
       return '经营范围输入有误，请修改'
   }

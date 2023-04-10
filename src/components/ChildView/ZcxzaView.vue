@@ -36,7 +36,8 @@
   </a-form>
 </template>
 <script lang="ts" setup>
-import { ref, watch,reactive } from 'vue';
+import { ref, watch,reactive, } from 'vue';
+import type { Ref } from 'vue';
 import {generate_head,generate_firstLine_description,generate_tiaokuan} from '@/utils/utils'
 const labelCol = { style: { width: '150px' } }
 const  wrapperCol =  { span: 14 }
@@ -52,33 +53,38 @@ const formState = reactive({
     location:'第二章第三条',
     listContent:[]
   });
-const plainOptions = ['经营范围', '住所'];
+const plainOptions = ['住所','经营范围'];
 watch(()=>formState.checkedList,(newValue,oldValue)=>{
   // console.log(newValue)
 })
-
+const number_array = ['一、','二、','三、']
 function generate_xiuzhengan(){
   let mycontent = ref('')
+  const content_array:Ref<string[]> = ref([])
+
+
   for (let item of formState.checkedList){
-    console.log(`item:${item}`)
-    if (item == '住所'){
-      mycontent.value += generate_tiaokuan(item,formState.origin_zhusuo,formState.origin_zhusuo)
-    }
+    // console.log(`item:${item}`)
+
     if (item == '经营范围'){
-      mycontent.value += generate_tiaokuan(item,formState.origin_jingyingfanwei,formState.modify_jingyingfanwei)
+      content_array.value.push(generate_tiaokuan(item,formState.origin_jingyingfanwei,formState.modify_jingyingfanwei))
+    }
+    if (item == '住所'){
+      content_array.value.push(generate_tiaokuan(item,formState.origin_zhusuo,formState.origin_zhusuo))
     }
   }
-  mycontent.value += "<li>章程其他条款不变。</li>"
+  content_array.value.push("章程其他条款不变")
+  for (let i=0;i<=formState.checkedList.length;i++){
+    mycontent.value += number_array[i] + content_array.value[i]
+  }
   // 将内容转换为Blob对象
-  const content = generate_head(formState.company_name)+generate_firstLine_description(formState.company_category)+"<ol>"+mycontent.value+"</ol><div style='text-align:right;font-size:16px;'><span style='margin-right:100px'>法定代表人签字:________</span><p style='text-align:right;font-size:16px;'><span style='margin-right:20px'>________年________月________日</span></p></body></html>";
+  const content = generate_head(formState.company_name)+generate_firstLine_description(formState.company_category)+mycontent.value+"<div style='text-align:right;font-size:16px;'><span style='margin-right:100px'>法定代表人签字:________</span><p style='text-align:right;font-size:16px;'><span style='margin-right:20px'>________年________月________日</span></p></body></html>";
 
-
-  console.log(content)
   const blob = new Blob([content], {type: "application/msword"});
 
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = formState.company_name + "章程修正案.doc";
+  link.download = formState.company_name + "章程修正案.docx";
 
   // 添加链接到页面中并触发下载
   document.body.appendChild(link);
