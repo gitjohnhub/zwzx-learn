@@ -75,7 +75,7 @@ const formState = reactive({
   modify_content_2: '',
 });
 watch(()=>formState.company_category,(newValue,oldValue)=>{
-  is_modify_farenzhiwu.value = formState.company_category == '一人有限公司' ? true: false
+  // is_modify_farenzhiwu.value = formState.company_category == '一人有限公司' ? true: false
   // console.log(newValue)
 })
 watch(()=>formState.decide_item,(newValue,oldValue)=>{
@@ -90,21 +90,18 @@ const decide_item_list = ['股权', '法人'];
 
 function generate_content() {
   let all_content = "";
-  let mycontent = '';
-  const title = formState.company_category === '一人有限公司' ? '股东决定' : '';
   if (formState.company_category == '一人有限公司'){
     if (formState.decide_item == '法人') {
-      mycontent = "聘任<span style='text-decoration:underline;'>"+formState.origin_faren_name+"</span>为公司"+formState.faren_category+"，免去<span style='text-decoration:underline;'>"+formState.origin_faren_name+"</span>"+"公司"+formState.faren_category+"的职务。"
-      all_content = generate_example(title,mycontent)
+      all_content = generate_gudongjueding(formState.origin_faren_name,formState.modify_faren_name,formState.faren_category)
     }
   }
   generate_download_link(all_content, formState.company_name + formState.company_category);
 }
 // （一人有限公司变法人职务，不设董事会）股东决定
-function generate_example(title:string,content:string){
-  const ex_title =  "<html><body><p style='text-align:center;font-size:24px;'>"+title+"</p ><p style='font-size:16px;'>"
+function generate_gudongjueding(origin_faren_name:string,modify_faren_name:string,faren_title:string){
+  const ex_title =  "<html><body><p style='text-align:center;font-size:24px;'>"+'股东决定'+"</p ><p style='font-size:16px;'>"
   const ex_firstLine = "<p>根据《公司法》规定，股东做出决定如下：</p>"
-  const ex_content = "<p style='margin-left:20px'>"+content+"</p>"+"<p>.</p><p>.</p><p>.</p><p>.</p>"
+  const ex_content = "<p style='margin-left:20px'>"+"聘任<span style='text-decoration:underline;'>"+modify_faren_name+"</span>为公司"+faren_title+"，免去<span style='text-decoration:underline;'>"+origin_faren_name+"</span>"+"公司"+faren_title+"的职务。"+"</p>"+"<p>.</p><p>.</p><p>.</p><p>.</p>"
   const last ="<div style='text-align:left;font-size:16px;'><span style='margin-right:100px'>股东（签字、盖章）:________</span><p style='text-align:right;font-size:16px;'><span style='margin-right:20px'>________年________月________日</span></p></body></html>"
   return ex_title + ex_firstLine + ex_content + last
   }

@@ -106,15 +106,16 @@ const formState = ref<FormState>({
 });
 function getTodayData(){
   console.log(dataStore.todayData[0]?.['business']?.[0])
-  formState.value.biangeng = dataStore.todayData[0]?.['business']?.[0] ?? 0
-  formState.value.shipin = dataStore.todayData[0]?.['business']?.[2] ?? 0
-  formState.value.jiulei = dataStore.todayData[0]?.['business']?.[4] ?? 0
-  formState.value.xinshe = dataStore.todayData[0]?.['business']?.[6] ?? 0
-  formState.value.qita = dataStore.todayData[0]?.['business']?.[8] ?? 0
-  formState.value.shuiwu = dataStore.todayData[0]?.['business']?.[10] ?? 0
-  formState.value.weijianwei = dataStore.todayData[0]?.['business']?.[12] ?? 0
-  formState.value.wenlv = dataStore.todayData[0]?.['business']?.[14] ?? 0
-  formState.value.qita2 = dataStore.todayData[0]?.['business']?.[16] ?? 0
+  let arr = dataStore.todayData[0]?.['business']?.split(',')
+  formState.value.biangeng =arr[0] ?? 0
+  formState.value.shipin = arr[1] ?? 0
+  formState.value.jiulei = arr[2] ?? 0
+  formState.value.xinshe = arr[3] ?? 0
+  formState.value.qita = arr[4] ?? 0
+  formState.value.shuiwu = arr[5] ?? 0
+  formState.value.weijianwei = arr[6] ?? 0
+  formState.value.wenlv = arr[7] ?? 0
+  formState.value.qita2 = arr[8] ?? 0
 }
 function submitData(){
   const business = []
