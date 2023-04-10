@@ -2,90 +2,112 @@
   <a-form :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol">
     <a-form-item label="公司名称：">
       <a-input v-model:value="formState.company_name" placeholder="公司名称"></a-input>
-
     </a-form-item>
-    <a-form-item label="请勾选公司性质">
-    <a-radio-group v-model:value="formState.company_category" :options="company_category_list" />
+    <a-form-item label="公司性质">
+      <a-radio-group v-model:value="formState.company_category" :options="company_category_list" />
     </a-form-item>
-
-    <a-form-item label="请勾选变更内容">
-      <a-checkbox-group v-model:value="formState.checkedList" :options="plainOptions" />
+    <a-form-item label="是否有董事会">
+      <a-radio-group v-model:value="formState.dongshihui" :options="['设董事会','不设董事会']" />
     </a-form-item>
 
-    <div  v-if="formState.checkedList.indexOf('经营范围') != -1">
-      <a-form-item label="原来的经营范围：">
-      <a-textarea v-model:value="formState.origin_jingyingfanwei" placeholder="请粘贴原来的经营范围"></a-textarea>
-     </a-form-item>
-    <a-form-item label="现在的经营范围：">
-     <a-textarea v-model:value="formState.modify_jingyingfanwei" placeholder="请粘贴现在的经营范围"></a-textarea>
+    <a-form-item label="变更内容">
+      <a-radio-group v-model:value="formState.decide_item" :options="decide_item_list" />
     </a-form-item>
+    <div v-if="false">
+      <a-form-item label="决定时间">
+        <a-date-picker v-model:value="formState.decide_date" />
+      </a-form-item>
+    </div>
+    <div v-if="false">
+      <a-form-item label="股东人数：">
+        <a-input v-model:value="formState.gudong_number" type="number"></a-input>
+      </a-form-item>
+    </div>
+    <div v-if="false">
+      <a-form-item label="法人股东名字：">
+        <!-- <a-input v-model:value="formState.gudong_name"></a-input> -->
+      </a-form-item>
     </div>
 
-    <div  v-if="formState.checkedList.indexOf('住所') != -1">
-      <a-form-item label="原来的住所：">
-      <a-textarea v-model:value="formState.origin_zhusuo" placeholder="请输入原来的公司经营地址"></a-textarea>
-     </a-form-item>
-    <a-form-item label="现在的住所：">
-     <a-textarea v-model:value="formState.modify_zhusuo" placeholder="请输入现在的公司经营地址"></a-textarea>
-    </a-form-item>
-    </div>
+      <div v-if="is_modify_farenzhiwu">
+        <a-form-item label="法人性质">
+          <a-radio-group v-model:value="formState.faren_category" :options="faren_category_list" />
+        </a-form-item>
+        <a-form-item label="原法人">
+          <a-input v-model:value="formState.origin_faren_name"></a-input>
+        </a-form-item>
+        <a-form-item label="现法人：">
+          <a-input v-model:value="formState.modify_faren_name"></a-input>
+        </a-form-item>
+      </div>
+    <!-- 生成按钮-->
     <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-      <a-button type="primary" @click="generate_xiuzhengan">Create</a-button>
-      <a-button style="margin-left: 10px">Cancel</a-button>
+      <a-button type="primary" @click="generate_content">生成</a-button>
+      <!-- <a-button style="margin-left: 10px">Cancel</a-button> -->
     </a-form-item>
   </a-form>
 </template>
 <script lang="ts" setup>
-import { ref, watch,reactive } from 'vue';
-import {generate_head,generate_firstLine_description,generate_tiaokuan} from '@/utils/utils'
-const labelCol = { style: { width: '150px' } }
-const  wrapperCol =  { span: 14 }
-const company_category_list = ['一人有限公司', '股份有限公司']
+import { ref, watch, reactive } from 'vue';
+import type { Dayjs } from 'dayjs';
+import {
+  generate_head,
+  generate_firstLine_description,
+  generate_download_link,
+} from '@/utils/utils';
+import { func } from 'vue-types';
+const labelCol = { style: { width: '150px' } };
+const wrapperCol = { span: 14 };
+const company_category_list = ['股份有限公司', '一人有限公司', '合资有限公司'];
+const is_modify_farenzhiwu = ref(true)
+const faren_category_list = ref(['执行董事','经理'])
 const formState = reactive({
-  company_category:'一人有限公司',
-    origin_jingyingfanwei: '',
-    modify_jingyingfanwei: '',
-    origin_zhusuo: '',
-    modify_zhusuo: '',
-    company_name: '',
-    checkedList: ['经营范围'],
-    location:'第二章第三条',
-    listContent:[]
-  });
-const plainOptions = ['经营范围', '住所'];
-watch(()=>formState.checkedList,(newValue,oldValue)=>{
+  company_name: '',
+  company_category: '一人有限公司',
+  faren_category:'执行董事',
+  decide_item: '股权',
+  dongshihui:'设董事会',
+  decide_date: '',
+  gudong_number: 1,
+  origin_faren_name: '',
+  modify_faren_name: '',
+  origin_content_1: '',
+  modify_content_2: '',
+});
+watch(()=>formState.company_category,(newValue,oldValue)=>{
+  is_modify_farenzhiwu.value = formState.company_category == '一人有限公司' ? true: false
   // console.log(newValue)
 })
+watch(()=>formState.decide_item,(newValue,oldValue)=>{
+  is_modify_farenzhiwu.value = formState.decide_item == '法人' ? true: false
+  // console.log(newValue)
+})
+watch(()=>formState.dongshihui,(newValue,oldValue)=>{
+  faren_category_list.value = formState.dongshihui == '不设董事会' ? ['执行董事','经理']: ['股东任命的董事长','董事会选举的董事长','经理']
+  // console.log(newValue)
+})
+const decide_item_list = ['股权', '法人'];
 
-function generate_xiuzhengan(){
-  let mycontent = ref('')
-  for (let item of formState.checkedList){
-    console.log(`item:${item}`)
-    if (item == '住所'){
-      mycontent.value += generate_tiaokuan(item,formState.origin_zhusuo,formState.origin_zhusuo)
-    }
-    if (item == '经营范围'){
-      mycontent.value += generate_tiaokuan(item,formState.origin_jingyingfanwei,formState.modify_jingyingfanwei)
+function generate_content() {
+  let all_content = "";
+  let mycontent = '';
+  const title = formState.company_category === '一人有限公司' ? '股东决定' : '';
+  if (formState.company_category == '一人有限公司'){
+    if (formState.decide_item == '法人') {
+      mycontent = "聘任<span style='text-decoration:underline;'>"+formState.origin_faren_name+"</span>为公司"+formState.faren_category+"，免去<span style='text-decoration:underline;'>"+formState.origin_faren_name+"</span>"+"公司"+formState.faren_category+"的职务。"
+      all_content = generate_example(title,mycontent)
     }
   }
-  mycontent.value += "<li>章程其他条款不变。</li>"
-  // 将内容转换为Blob对象
-  const content = generate_head(formState.company_name)+generate_firstLine_description(formState.company_category)+"<ol>"+mycontent.value+"</ol><div style='text-align:right;font-size:16px;'><span style='margin-right:100px'>法定代表人签字:________</span><p style='text-align:right;font-size:16px;'><span style='margin-right:20px'>________年________月________日</span></p></body></html>";
-
-
-  console.log(content)
-  const blob = new Blob([content], {type: "application/msword"});
-
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = formState.company_name + "章程修正案.doc";
-
-  // 添加链接到页面中并触发下载
-  document.body.appendChild(link);
-  link.click();
-
-  // 释放URL对象
-  URL.revokeObjectURL(link.href);
+  generate_download_link(all_content, formState.company_name + formState.company_category);
 }
+// （一人有限公司变法人职务，不设董事会）股东决定
+function generate_example(title:string,content:string){
+  const ex_title =  "<html><body><p style='text-align:center;font-size:24px;'>"+title+"</p ><p style='font-size:16px;'>"
+  const ex_firstLine = "<p>根据《公司法》规定，股东做出决定如下：</p>"
+  const ex_content = "<p style='margin-left:20px'>"+content+"</p>"+"<p>.</p><p>.</p><p>.</p><p>.</p>"
+  const last ="<div style='text-align:left;font-size:16px;'><span style='margin-right:100px'>股东（签字、盖章）:________</span><p style='text-align:right;font-size:16px;'><span style='margin-right:20px'>________年________月________日</span></p></body></html>"
+  return ex_title + ex_firstLine + ex_content + last
+  }
+// 一人有限公司变法人职务，设董事会，股东决定（董事长为法定代表人，由股东任命）
 
 </script>

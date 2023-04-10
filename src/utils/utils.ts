@@ -15,6 +15,20 @@ export function generate_firstLine_description(company_category:string){
 
 }
 
+export function generate_download_link(content:string,filename:string){
+  const blob = new Blob([content], {type: "application/msword"});
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename + ".doc";
+
+  // 添加链接到页面中并触发下载
+  document.body.appendChild(link);
+  link.click();
+
+  // 释放URL对象
+  URL.revokeObjectURL(link.href);
+}
+
 export function generate_tiaokuan(tiaokuan:string,origin_content:string,modify_content:string){
   switch (tiaokuan){
     case '经营范围':
