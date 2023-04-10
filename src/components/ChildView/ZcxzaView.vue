@@ -30,8 +30,8 @@
     </a-form-item>
     </div>
     <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-      <a-button type="primary" @click="generate_xiuzhengan">Create</a-button>
-      <a-button style="margin-left: 10px">Cancel</a-button>
+      <a-button type="primary" @click="generate_xiuzhengan">生成</a-button>
+      <!-- <a-button style="margin-left: 10px">Cancel</a-button> -->
     </a-form-item>
   </a-form>
 </template>
