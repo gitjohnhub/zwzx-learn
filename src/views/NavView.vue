@@ -50,6 +50,7 @@
       </template>
       <template #title>工作人员入口</template>
       <RouterLink to="/BangbanData"><a-menu-item key="5">帮办数据上报</a-menu-item></RouterLink>
+      <RouterLink to="/Vocation"><a-menu-item key="6">请假审批</a-menu-item></RouterLink>
       <!-- <a-menu-item key="10">Option 10</a-menu-item> -->
     </a-sub-menu>
   </a-menu>

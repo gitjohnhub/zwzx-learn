@@ -55,6 +55,14 @@ const router = createRouter({
       component: () => import('@/components/BangbanDataView.vue')
     },
     {
+      path: '/Vocation',
+      name: 'Vocation',
+      meta:{
+        requiresAuth:true
+      },
+      component: () => import('@/components/VocationView.vue')
+    },
+    {
       path: '/Login',
       name: 'Login',
       component: () => import('@/components/LoginView.vue')
