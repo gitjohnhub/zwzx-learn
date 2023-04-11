@@ -18,7 +18,7 @@
         </template>
         <template #title>市场监督局</template>
         <RouterLink to="/"><a-menu-item key="1">直达链接</a-menu-item></RouterLink>
-        <!-- <RouterLink to="/Content"><a-menu-item key="2">办理指引</a-menu-item></RouterLink> -->
+        <RouterLink to="/Content"><a-menu-item key="2">办理指引</a-menu-item></RouterLink>
       </a-menu-item-group>
 
        <!-- 税务直达链接 -->

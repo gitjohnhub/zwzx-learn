@@ -52,6 +52,15 @@ export const useDataStore = defineStore('mydata', () => {
       }
       )
   }
+  async function querybangban_data(jiange_Date) {
+    console.log(jiange_Date[0])
+    console.log(jiange_Date[0].toISOString().slice(0,10))
+    return await supabase
+      .from('bangban')
+      .select()
+      .gte('submitDate', jiange_Date[0].toISOString().slice(0,10))
+      .lte('submitDate', jiange_Date[1].toISOString().slice(0,10))
+  }
 
   function isTodayDataExists():number| null{
     for (const item of bangban_data.value){
@@ -102,6 +111,18 @@ export const useDataStore = defineStore('mydata', () => {
       "id":'https://yct.sh.gov.cn/portal_yct/',
       "name":'新办企业'
     },
+    "kuaquqianyi":{
+      "id":'https://yct.sh.gov.cn/portal_yct/etpslogin/tips?sysTo=move&redirectUrl=http://yct.sh.gov.cn/bizhallnz_yctnew/transferToYct',
+      "name":'跨区迁移'
+    },
+    "guojiaqiyexinyong":{
+      "id":'https://fw.scjgj.sh.gov.cn/noticerpt/user/popup_login',
+      "name":'国家企业信用公示网'
+    },
+    "minchengshenbao":{
+      "id":'https://fw.scjgj.sh.gov.cn/nameqry/toCheckNameIndex.action',
+      "name":'企业名称自主申办（企业更名）'
+    },
     "danganchaxun":{
       "id":'https://fw.scjgj.sh.gov.cn/achieve_outer/apply/mainEtps',
       "name":'企业档案查询'
@@ -109,7 +130,7 @@ export const useDataStore = defineStore('mydata', () => {
     "qiyebiangeng": [
       {
       "id": "e661e9da-d47e-4231-b5d5-0f39a4ab88a7",
-      "name": "企业登记注册（内资公司及分公司） "
+      "name": "企业变更 "
       },
     ],
     "shipin": [
@@ -220,6 +241,7 @@ export const useDataStore = defineStore('mydata', () => {
     insertBangban_data,
     updateBangban_data,
     todayData,
+    querybangban_data,
     isTodayDataExists}
 })
 

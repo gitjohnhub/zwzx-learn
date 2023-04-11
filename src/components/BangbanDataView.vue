@@ -15,6 +15,8 @@
     :label-col="labelCol"
     :wrapper-col="wrapperCol"
   >
+  <a-row  :gutter="24">
+  <a-col :span="12">
     <a-form-item label="变更">
       <a-input v-model:value="formState.biangeng" type='number'>
       </a-input>
@@ -35,6 +37,8 @@
       <a-input v-model:value="formState.qita" type='number'>
       </a-input>
     </a-form-item>
+    </a-col>
+    <a-col>
     <a-form-item label="税务">
       <a-input v-model:value="formState.shuiwu" type='number'>
       </a-input>
@@ -51,6 +55,8 @@
       <a-input v-model:value="formState.qita2" type='number'>
       </a-input>
     </a-form-item>
+  </a-col>
+</a-row>
     <a-form-item>
       <a-button
         type="primary"
@@ -73,15 +79,55 @@
         </template>
     </template>
   </a-table>
+  <a-card>
+    <a-space direction="vertical" :size="12">
+      <a-range-picker v-model:value="query_Date" />
+    </a-space>
+    <a-row>
+    <a-col :span="12">
+      <a-statistic title='秦' :value='businessSumsByEmail["qinyinqi@zwzx.com"]' style="margin-right: 50px" />
+    </a-col>
+    <a-col :span="12">
+      <a-statistic title='张' :value='businessSumsByEmail["zhangyi@zwzx.com"]' style="margin-right: 50px" />
+    </a-col>
+    <a-col :span="12">
+      <a-statistic title='赵' :value='businessSumsByEmail["zhaozihao@zwzx.com"]' style="margin-right: 50px" />
+    </a-col>
+  </a-row>
+    <!-- {{query_Data}} -->
+    <!-- {{ businessSumsByEmail }} -->
+  </a-card>
+
 </template>
 
 
 <script setup lang="ts">
 import {useDataStore} from '@/stores/counter'
-import { onBeforeMount,ref } from 'vue';
+import { onBeforeMount,ref,watch } from 'vue';
 import { message } from 'ant-design-vue';
 import router from '@/router';
 const dataStore = useDataStore()
+const query_Date = ref([])
+const query_Data = ref()
+const businessSumsByEmail = ref({"qinyinqi@zwzx.com":0,"zhangyi@zwzx.com":0,"zhaozihao@zwzx.com":0});
+
+watch(query_Date,(newValue,oldValue)=>{
+  businessSumsByEmail.value = {"qinyinqi@zwzx.com":0,"zhangyi@zwzx.com":0,"zhaozihao@zwzx.com":0};
+  dataStore.querybangban_data(newValue).then((res)=>{
+    console.log(res.data)
+    query_Data.value = res.data
+    res.data!.forEach(obj  => {
+      console.log(obj)
+      const email = obj.email;
+      const businessArray = obj.business.split(',').map(Number);
+      const businessSum = businessArray.reduce((acc:number, curr:number) => acc + curr, 0);
+      businessSumsByEmail.value[email] += businessSum;
+      console.log(businessSumsByEmail.value)
+
+    });
+  })
+
+})
 interface FormState {
   biangeng: number,
       shipin: number,
