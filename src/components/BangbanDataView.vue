@@ -84,16 +84,18 @@
       <a-range-picker v-model:value="query_Date" />
     </a-space>
     <a-row>
-    <a-col :span="12">
+    <a-col :span="6">
       <a-statistic title='秦' :value='businessSumsByEmail["qinyinqi@zwzx.com"]' style="margin-right: 50px" />
     </a-col>
-    <a-col :span="12">
+    <a-col :span="6">
       <a-statistic title='张' :value='businessSumsByEmail["zhangyi@zwzx.com"]' style="margin-right: 50px" />
     </a-col>
-    <a-col :span="12">
+    <a-col :span="6">
       <a-statistic title='赵' :value='businessSumsByEmail["zhaozihao@zwzx.com"]' style="margin-right: 50px" />
     </a-col>
   </a-row>
+  <a-table :dataSource="query_Data" :columns="columns" >
+  </a-table>
     <!-- {{query_Data}} -->
     <!-- {{ businessSumsByEmail }} -->
   </a-card>
@@ -107,6 +109,7 @@ import { onBeforeMount,ref,watch } from 'vue';
 import { message } from 'ant-design-vue';
 import router from '@/router';
 const dataStore = useDataStore()
+// const today = new Date().toISOString().slice(0,10)
 const query_Date = ref([])
 const query_Data = ref()
 const businessSumsByEmail = ref({"qinyinqi@zwzx.com":0,"zhangyi@zwzx.com":0,"zhaozihao@zwzx.com":0});
