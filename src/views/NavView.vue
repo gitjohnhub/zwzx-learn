@@ -37,13 +37,13 @@
 
     <!-- 章程范本自动生成 -->
 
-    <!-- <a-sub-menu key="sub2" @titleClick="titleClick">
+    <a-sub-menu key="sub2" @titleClick="titleClick">
       <template #icon>
         <AppstoreOutlined />
       </template>
       <template #title>章程范本</template>
       <RouterLink to="/Zidongshengcheng"><a-menu-item key="5">自动生成</a-menu-item></RouterLink>
-    </a-sub-menu> -->
+    </a-sub-menu>
     <a-sub-menu key="sub4">
       <template #icon>
         <SettingOutlined />
