@@ -17,7 +17,7 @@
   <a-row>
     <a-col :span='12'>
       <a-timeline>
-        <a-timeline-item v-for="(item, index) in bangban_content[value1]['content']"
+        <a-timeline-item  style="font-size:20px" v-for="(item, index) in bangban_content[value1]['content']"
           >{{ index }}、{{ item }}</a-timeline-item
         >
       </a-timeline>
