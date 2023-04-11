@@ -8,13 +8,19 @@ const size = ref<SizeType>('large')
 </script>
 
 <template>
+  <!-- 市场监督局事项 -->
    <a-divider />
   <a-row><h3>{{data.qiyebiangeng[0].name}}</h3></a-row>
   <a-row>
+    <!-- id是有事项编码的 -->
     <a-col v-for='item in data.qiyebiangeng'>
       <a :href='data.banli_url.id+item.id' target="_blank"><a-button type="primary" shape="round" :size="size">{{item.name}}</a-button></a>
     </a-col>
+    <!-- 直接是网址 -->
+
     <a-col><a :href='data.zhangchengfanben.id' target="_blank"><a-button type="primary" shape="round" :size="size">{{data.zhangchengfanben.name}}</a-button></a></a-col>
+    <a-col><a :href='data.xinbanqiye.id' target="_blank"><a-button type="primary" shape="round" :size="size">{{data.xinbanqiye.name}}</a-button></a></a-col>
+    <a-col><a :href='data.danganchaxun.id' target="_blank"><a-button type="primary" shape="round" :size="size">{{data.danganchaxun.name}}</a-button></a></a-col>
   </a-row>
 
   <a-divider />

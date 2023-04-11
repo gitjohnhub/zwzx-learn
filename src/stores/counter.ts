@@ -98,6 +98,14 @@ export const useDataStore = defineStore('mydata', () => {
       "id":'https://fw.scjgj.sh.gov.cn/shaic/innerDocExamp!toIndex.action',
       "name":'章程范本'
     },
+    "xinbanqiye":{
+      "id":'https://yct.sh.gov.cn/portal_yct/',
+      "name":'新办企业'
+    },
+    "danganchaxun":{
+      "id":'https://fw.scjgj.sh.gov.cn/achieve_outer/apply/mainEtps',
+      "name":'企业档案查询'
+    },
     "qiyebiangeng": [
       {
       "id": "e661e9da-d47e-4231-b5d5-0f39a4ab88a7",
