@@ -68,7 +68,7 @@
 </template>
 <script lang="ts" setup>
 import { ref, watch, reactive } from 'vue';
-import { generate_download_link } from '@/utils/utils';
+import { add_qianzi, generate_download_link } from '@/utils/utils';
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 const labelCol = { style: { width: '150px' } };
 const wrapperCol = { span: 14 };
@@ -349,7 +349,7 @@ function generate_guquanzhuanrang_gudongjueding() {
   const ex_content_1 = '<p>一、公司股东变更后，股东的出资额和持股比例如下：</p>'
   const ex_content_2 = '<p>股东'+formState.gudong_name+'，出资额：'+formState.gudong_money+'万元，出资比例：100％。</p>'
   const ex_content_3 = '<p>二、通过公司章程修正案;</p><p>三、公司股东发生变动后，公司董事、监事、高管人员不变。</p>'
-  return ex_title + ex_firstLine + ex_content_1 + ex_content_2 +ex_content_3+ gudongqianzi;
+  return ex_title + ex_firstLine + ex_content_1 + ex_content_2 +ex_content_3+ add_qianzi('股东');
 }
 
 const gudongqianzi = "</p><p>.</p><p>.</p><p>.</p><div style='text-align:left;font-size:16px;'><span style='margin-right:100px'>股东(签字、盖章):________</span><p style='text-align:right;font-size:16px;'><span style='margin-right:20px'>________年________月________日</span></p></body></html>";

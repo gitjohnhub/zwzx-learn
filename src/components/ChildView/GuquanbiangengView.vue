@@ -38,6 +38,12 @@
         <a-input v-model:value="formState.modify_gudong_address"></a-input>
       </a-form-item>
     </div>
+      <a-form-item label="原来的经营范围：">
+      <a-textarea v-model:value="formState.origin_zc_content" placeholder="请粘贴原来的经营范围"></a-textarea>
+     </a-form-item>
+    <a-form-item label="现在的经营范围：">
+     <a-textarea v-model:value="formState.modify_zc_content" placeholder="请粘贴现在的经营范围"></a-textarea>
+    </a-form-item>
     <!-- 生成按钮-->
     <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
       <a-button type="primary" @click="generate_content">生成</a-button>
@@ -71,6 +77,8 @@ const formState = reactive({
   modify_gudong_address: '',
   modify_gudong_name: '',
   gudong_money: '',
+  origin_zc_content:'',
+  modify_zc_content:''
 });
 watch(formState, (newValue, oldValue) => {});
 
@@ -82,11 +90,12 @@ function generate_content() {
   if (formState.company_category == '一人有限公司') {
     gudongjueding_content = generate_guquanzhuanrang_gudongjueding();
     guquanzhuanrangxieyi_content = generate_guquanzhuanrang_xieyi();
+    zhangchengxiuzhengan = generate_zhangchengxiuzhengan()
   }
   console.log(gudongjueding_content)
 
   generate_download_link(gudongjueding_content, formState.company_name + '股东决定');
-  // generate_download_link(zhangchengxiuzhengan, formState.company_name + '章程修正案');
+  generate_download_link(zhangchengxiuzhengan, formState.company_name + '章程修正案');
   generate_download_link(guquanzhuanrangxieyi_content, formState.company_name + '股权转让协议');
 }
 
@@ -103,7 +112,16 @@ function generate_guquanzhuanrang_gudongjueding() {
     '万元，出资比例：100％。</p>';
   const ex_content_3 =
     '<p>二、通过公司章程修正案;</p><p>三、公司股东发生变动后，公司董事、监事、高管人员不变。</p>';
-  return ex_title + ex_firstLine + ex_content_1 + ex_content_2 + ex_content_3 + gudongqianzi;
+  return ex_title + ex_firstLine + ex_content_1 + ex_content_2 + ex_content_3 + add_qianzi("股东")+add_date();
+}
+function generate_zhangchengxiuzhengan(){
+  const all_content = add_title(`${formState.company_name}章程修正案`)+
+  add_p("根据《公司法》及股东会决议，对章程如下：")+
+  add_p(`一、章程第四章第五条原为：${add_underLine(formState.origin_zc_content)}`)+
+  add_p(`现将该条修改为：${add_underLine(formState.modify_zc_content)}`)+
+  add_p(`三、章程其他条款不变。`)+
+  add_qianzi('股东')+add_date()
+  return all_content
 }
 
 //一人有限公司股权转让协议样本
@@ -143,6 +161,4 @@ function generate_guquanzhuanrang_xieyi() {
 
     ;
 }
-const gudongqianzi =
-  "</p><p>.</p><p>.</p><p>.</p><div style='text-align:left;font-size:16px;'><span style='margin-right:100px'>股东(签字、盖章):________</span><p style='text-align:right;font-size:16px;'><span style='margin-right:20px'>________年________月________日</span></p></body></html>";
 </script>
