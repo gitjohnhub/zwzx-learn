@@ -12,8 +12,8 @@
       </a-form-item>
     </div>
     <div v-if="show_gudong_money">
-      <a-form-item label="原股东（出让方）出资额：万元">
-        <a-input v-model:value="formState.gudong_money"></a-input>
+      <a-form-item label="原股东（出让方）出资额:" >
+        <a-input v-model:value="formState.gudong_money" addon-after="万元"></a-input>
       </a-form-item>
     </div>
     <div v-if="show_gudong_name">
