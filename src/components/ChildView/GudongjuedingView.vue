@@ -73,7 +73,8 @@ import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
 const labelCol = { style: { width: '150px' } };
 const wrapperCol = { span: 14 };
 const company_category_list = ref(['股份有限公司', '一人有限公司', '合资有限公司']);
-const decide_item_list = ['股东', '法人'];
+// const decide_item_list = ['股东', '法人'];
+const decide_item_list = ['法人'];
 const faren_category_list = ref(['执行董事', '经理']);
 const show_has_dongshihui = ref(false);
 const show_dongshihui_num = ref(true);
@@ -234,7 +235,9 @@ function generate_content() {
     }
   }
   if (formState.decide_item == '股东'){
-    all_content =  generate_guquanzhuanrang_gudongjueding()
+    if(formState.company_category == '一人有限公司'){
+      all_content =  generate_guquanzhuanrang_gudongjueding()
+    }
   }
   generate_download_link(all_content, formState.company_name+'股东决定');
 }

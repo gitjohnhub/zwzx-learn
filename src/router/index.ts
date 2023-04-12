@@ -24,6 +24,11 @@ const router = createRouter({
           name:"Gudongjueding",
           component:() => import('@/components/ChildView/GudongjuedingView.vue'),
         },
+        {
+          path:"Guquanbiangeng",
+          name:"Guquanbiangeng",
+          component:() => import('@/components/ChildView/GuquanbiangengView.vue'),
+        },
       ]
     },
     {

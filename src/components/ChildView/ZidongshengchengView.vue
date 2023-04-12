@@ -6,11 +6,15 @@ const size =  ref<SizeType>('large')
 
 <template>
   <h1>自动生成</h1>
+  <h3>*使用须知：仅生成基础模版，请按照实际情况修改，如有不清楚请打印后拿给窗口老师指导修改，具体内容以窗口老师为准，本自动生成器不承担任何责任</h3>
   <RouterLink to="/Zidongshengcheng/zcxza"><a-button type="normal" shape="round" :size="size">
     章程修正案
   </a-button></RouterLink>
   <RouterLink to="/Zidongshengcheng/gudongjueding"><a-button type="normal" shape="round" :size="size">
-    股东决定
+    法人变更股东决定
+  </a-button></RouterLink>
+  <RouterLink to="/Zidongshengcheng/Guquanbiangeng"><a-button type="normal" shape="round" :size="size">
+    股权变更
   </a-button></RouterLink>
 
   <RouterView />
