@@ -6,36 +6,51 @@
     <a-form-item label="公司性质">
       <a-radio-group v-model:value="formState.company_category" :options="company_category_list" />
     </a-form-item>
-    <div v-if="show_gudong_num">
+    <!-- <div v-if="show_gudong_num">
       <a-form-item label="股东人数：">
         <a-input v-model:value="formState.gudong_num" type="number"></a-input>
       </a-form-item>
-    </div>
+    </div> -->
 
+    <template v-if="!show_single_gudong">
+      <a-form ref="formRef" :model="formState_hezi">
+        <a-row v-for="(gudong, index) in formState_hezi.gudongs" :key="index">
+          <a-form-item>
+            <a-input
+              addon-before="原出资人姓名"
+              v-model:value="gudong.name"
+              placeholder="placeholder"
+            ></a-input>
+          </a-form-item>
+          <a-form-item>
+            <a-input
+              addon-before="出资额"
+              v-model:value="gudong.chuzie"
+              placeholder="placeholder"
+              addon-after="万元"
+            ></a-input>
+          </a-form-item>
+          <a-form-item>
+            <minus-circle-outlined
+              v-if="formState_hezi.gudongs.length > 1"
+              class="dynamic-delete-button"
+              :disabled="formState_hezi.gudongs.length === 1"
+              @click="removeGudong(gudong)"
+            />
+          </a-form-item>
+        </a-row>
+      </a-form>
 
-    <template v-for="i in Number(formState.gudong_num)" :key="i" v-if='formState.company_category=="合资有限公司"'>
-      <a-form :model="formState_hezi"  layout="inline">
-            <a-form-item>
-              <a-input addon-before="出资人" v-model:value="formState.company_name" placeholder="placeholder"></a-input>
-            </a-form-item>
-            <a-form-item>
-              <a-input addon-before="出资人" v-model:value="formState.company_name" placeholder="placeholder" addon-after="万元"></a-input>
-            </a-form-item>
-          </a-form>
+      <a-button @click="addGudong">添加原股东</a-button>
+    </template>
 
-        </template>
-
-    <div v-if="show_gudong_money">
+    <div v-if="show_single_gudong">
       <a-form-item label="原股东（出让方）出资额:">
         <a-input v-model:value="formState.gudong_money" addon-after="万元"></a-input>
       </a-form-item>
-    </div>
-    <div v-if="show_decide_date">
       <a-form-item label="原股东出资时间">
         <a-date-picker v-model:value="formState.origin_decide_date" :locale="locale" />
       </a-form-item>
-    </div>
-    <div v-if="show_gudong_money">
       <a-form-item label="原股东出资方式:">
         <!-- <a-input v-model:value="formState.origin_chuzifangshi"></a-input> -->
         <a-tooltip>
@@ -46,8 +61,6 @@
           </a-select>
         </a-tooltip>
       </a-form-item>
-    </div>
-    <div v-if="show_gudong_money">
       <a-form-item label="现股东出资方式:">
         <!-- <a-input v-model:value="formState.modify_chuzifangshi"></a-input> -->
         <a-select ref="select" v-model:value="formState.modify_chuzifangshi">
@@ -55,25 +68,16 @@
           <a-select-option value="继承">继承</a-select-option>
         </a-select>
       </a-form-item>
-    </div>
-    <div v-if="show_gudong_name">
       <a-form-item label="原股东（出让方）名字：">
         <a-input v-model:value="formState.origin_gudong_name"></a-input>
       </a-form-item>
-    </div>
-
-    <div v-if="show_gudong_money">
       <a-form-item label="原股东（出让方）住址：">
         <a-input v-model:value="formState.origin_gudong_address"></a-input>
       </a-form-item>
-    </div>
 
-    <div v-if="show_gudong_name">
       <a-form-item label="现股东（受让方）名字：">
         <a-input v-model:value="formState.modify_gudong_name"></a-input>
       </a-form-item>
-    </div>
-    <div v-if="show_gudong_money">
       <a-form-item label="现股东（受让方）住址：">
         <a-input v-model:value="formState.modify_gudong_address"></a-input>
       </a-form-item>
@@ -94,7 +98,10 @@
   </a-form>
 </template>
 <script lang="ts" setup>
+import { MinusCircleOutlined } from '@ant-design/icons-vue';
 import { ref, watch, reactive } from 'vue';
+import type { FormInstance } from 'ant-design-vue';
+import HeziView from '@/components/ChildView/HeziView.vue';
 import {
   generate_download_link,
   formatDate,
@@ -105,18 +112,39 @@ import {
   add_title,
 } from '@/utils/utils';
 import locale from 'ant-design-vue/es/date-picker/locale/zh_CN';
+
+interface Gudong {
+  name: string;
+  chuzie: string;
+}
 const labelCol = { style: { width: '200px' } };
 const wrapperCol = { span: 14 };
 const company_category_list = ref(['一人有限公司', '合资有限公司']);
-const show_modify_faren_name = ref(true);
+const show_single_gudong = ref(true);
 const show_decide_date = ref(true);
-const show_gudong_num = ref(true)
+const show_gudong_num = ref(true);
 const show_gudong_name = ref(true);
 const show_gudong_money = ref(true);
-const formState_hezi = reactive({
-  company_name: '',
-
-})
+const formRef = ref<FormInstance>();
+const formState_hezi = reactive<{ gudongs: Gudong[] }>({
+  gudongs: [],
+});
+({
+  gudongs: [],
+});
+const addGudong = () => {
+  console.log(formState_hezi.gudongs);
+  formState_hezi.gudongs.push({
+    name: '',
+    chuzie: '',
+  });
+};
+const removeGudong = (item: Gudong) => {
+  let index = formState_hezi.gudongs.indexOf(item);
+  if (index !== -1) {
+    formState_hezi.gudongs.splice(index, 1);
+  }
+};
 const formState = reactive({
   company_name: '',
   company_category: '一人有限公司',
@@ -134,10 +162,18 @@ const formState = reactive({
   modify_chuzifangshi: '',
 });
 watch(formState, (newValue, oldValue) => {
-  if(formState.company_category == "合资有限公司"){
-    show_gudong_num.value = true
+  if (formState.company_category == '合资有限公司') {
+    show_single_gudong.value = false
+    // show_gudong_num.value = true
+  }else {
+    show_single_gudong.value = true
+
   }
 });
+watch(
+  () => formState.gudong_num,
+  (newValue, oldValue) => {}
+);
 
 function generate_content() {
   let gudongjueding_content = '';
