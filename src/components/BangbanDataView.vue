@@ -65,7 +65,7 @@
       <a-range-picker v-model:value="query_Date" />
     </a-space>
     <a-row>
-      <a-col :span="8" v-for="item in businessSumsByEmail">
+      <a-col :span="8" v-for="item in businessSumsByEmail" :key="item.count">
         <a-statistic :title="item.email" :value="item.count" style="margin-right: 50px" />
       </a-col>
     </a-row>
@@ -83,7 +83,6 @@ const dataStore = useDataStore();
 const query_Date = ref([]);
 const query_Data = ref();
 const businessSumsByEmail = ref();
-
 watch(query_Date, (newValue, oldValue) => {
   businessSumsByEmail.value = {
     'qinyinqi@zwzx.com': 0,

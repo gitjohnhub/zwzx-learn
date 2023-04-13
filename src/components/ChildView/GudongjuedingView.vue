@@ -90,7 +90,7 @@ const show_gudong_money = ref(false)
 
 const formState = reactive({
   company_name: '',
-  company_category: '一人有限公司',
+  company_category: '股份有限公司',
   faren_category: '经理',
   decide_item: '法人',
   dongshihui: '不设董事会',
