@@ -14,7 +14,12 @@
 
     <template v-if="!show_single_gudong">
       <!-- 添加原股东 -->
+      <a-card>
+
+
       <a-form :model="formState_hezi">
+        <a-form-item> <a-button @click="addGudong">添加原来所有的股东</a-button></a-form-item>
+
         <a-row v-for="(gudong, index) in formState_hezi.gudongs" :key="index">
           <a-form-item>
             <a-input
@@ -40,9 +45,12 @@
             />
           </a-form-item>
         </a-row>
-        <a-form-item> <a-button @click="addGudong">添加原股东</a-button></a-form-item>
       </a-form>
+    </a-card>
       <!-- 添加现有股东 -->
+      <a-card>
+      <a-form-item> <a-button @click="addModifyGudong">添加现在所有的股东</a-button></a-form-item>
+
       <a-form :model="modify_hezi">
         <a-row v-for="(gudong, index) in modify_hezi.gudongs" :key="index">
           <a-form-item>
@@ -69,10 +77,14 @@
             />
           </a-form-item>
         </a-row>
-        <a-form-item> <a-button @click="addModifyGudong">添加现有股东</a-button></a-form-item>
       </a-form>
+    </a-card>
       <!-- 添加转让信息 -->
+      <a-card>
+
       <a-form :model="zhuanrang_info">
+        <a-form-item> <a-button @click="addZhuanrangInfo">添加转让信息</a-button></a-form-item>
+
         <a-row v-for="(zhuanrang, index) in zhuanrang_info.zhuanrangs" :key="index">
           <!-- 转让人 -->
           <a-form-item>
@@ -112,8 +124,8 @@
             />
           </a-form-item>
         </a-row>
-        <a-form-item> <a-button @click="addZhuanrangInfo">添加转让信息</a-button></a-form-item>
       </a-form>
+    </a-card>
     </template>
 
     <div v-if="show_single_gudong">
@@ -197,7 +209,7 @@ interface Zhuanrang {
   shourang_name: string;
   zhuanrange: string;
 }
-const labelCol = { style: { width: '200px' } };
+const labelCol = { span: 10};
 const wrapperCol = { span: 14 };
 const company_category_list = ref(['一人有限公司', '合资有限公司']);
 const show_single_gudong = ref(true);

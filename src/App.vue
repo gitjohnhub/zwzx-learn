@@ -6,13 +6,13 @@ import yiwangtongban_logo2 from './assets/yiwangtongban_logo2.jpeg'
 
 <template>
    <a-row>
-    <a-col :span="8">
+    <a-col :span="6">
 
       <a-row><a-avatar shape="square" :src="yiwangtongban_logo2" style="margin-top: 5px;margin-left: 10px;"></a-avatar><h1>长宁区政务服务中心</h1></a-row>
       <NavView />
 
     </a-col>
-    <a-col :span="12" style="margin-top: 10px;">
+    <a-col :span="16" style="margin-top: 10px;">
 
       <RouterView/>
     </a-col>
