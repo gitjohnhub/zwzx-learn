@@ -36,7 +36,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { bangban_content } from '@/utils/bangban_content';
-import { func } from 'vue-types';
 const value1 = ref<string>('电子营业执照申请');
 const img_list = ref<any>([]);
 function change_content(key:any){
