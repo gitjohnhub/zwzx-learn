@@ -43,14 +43,25 @@
       </template>
       <template #title>章程范本</template>
       <RouterLink to="/Zidongshengcheng"><a-menu-item key="5">自动生成</a-menu-item></RouterLink>
+      <!-- <RouterLink to="/Fanben"><a-menu-item key="6">表格样张参考</a-menu-item></RouterLink> -->
     </a-sub-menu>
+    <a-sub-menu key="sub3" @titleClick="titleClick">
+      <template #icon>
+        <AppstoreOutlined />
+      </template>
+      <template #title>表格样张参考</template>
+      <!-- <RouterLink to="/Fanben/Shipinxinban"><a-menu-item key="6">食品经营许可证新办</a-menu-item></RouterLink> -->
+      <RouterLink to="/Fanben/PdfView"><a-menu-item key="6">样表查询</a-menu-item></RouterLink>
+      <!-- <RouterLink to="/Fanben"><a-sub-menu key="7">表格样张参考</a-sub-menu></RouterLink> -->
+    </a-sub-menu>
+
     <a-sub-menu key="sub4">
       <template #icon>
         <SettingOutlined />
       </template>
       <template #title>工作人员入口</template>
-      <RouterLink to="/BangbanData"><a-menu-item key="5">帮办数据上报</a-menu-item></RouterLink>
-      <RouterLink to="/Leave"><a-menu-item key="6">请假审批</a-menu-item></RouterLink>
+      <RouterLink to="/BangbanData"><a-menu-item key="8">帮办数据上报</a-menu-item></RouterLink>
+      <RouterLink to="/Leave"><a-menu-item key="9">请假审批</a-menu-item></RouterLink>
       <!-- <a-menu-item key="10">Option 10</a-menu-item> -->
     </a-sub-menu>
   </a-menu>

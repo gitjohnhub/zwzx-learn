@@ -13,9 +13,12 @@
     "@ant-design/icons-vue": "^6.1.0",
     "@supabase/supabase-js": "^2.14.0",
     "ant-design-vue": "^3.2.16",
+    "pdfjs-dist": "^3.5.141",
     "pinia": "^2.0.33",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue-pdf-embed": "^1.1.5",
+    "vue-router": "^4.1.6",
+    "vue3-pdf-app": "^1.0.3"
   },
   "devDependencies": {
     "@types/node": "^18.14.2",

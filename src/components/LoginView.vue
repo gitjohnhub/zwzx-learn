@@ -52,8 +52,9 @@ const login = async () => {
         console.log(res.data.user)
         user.user.value = res.data.user.email!
         dataStore.user = res.data.user.email!;
+        console.log("route=>",router)
         router.push({ name: 'BangbanData' });
-        // router.go(-1)
+
       }else {
         message.info('用户名或密码错误，联系管理员');
       }
