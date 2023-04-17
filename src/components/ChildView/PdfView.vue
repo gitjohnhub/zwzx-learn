@@ -1,28 +1,14 @@
 <template>
   <a-row>
     <a-col :span="6">
-      <a-row> <a-divider>市场监督局事项 </a-divider> </a-row>
-      <a-row><a-divider>食品经营许可证 </a-divider></a-row>
-      <a-row>
-        <a-radio-group v-model:value="value">
-          <a-radio :style="radioStyle" v-for="item in list.shipin" :value="item.url" :key="item.url">{{item.name}}</a-radio>
-        </a-radio-group>
-      </a-row>
+      <a-row> <a-divider>事项列表 </a-divider> </a-row>
 
-      <a-row><a-divider>酒类经营许可证零售 </a-divider></a-row>
-      <a-row>
-        <a-radio-group v-model:value="value">
-          <a-radio :style="radioStyle" v-for="item in list.jiulei" :value="item.url" :key="item.url">{{item.name}}</a-radio>
-        </a-radio-group>
-      </a-row>
-
-      <a-row> <a-divider>长宁区卫建委</a-divider> </a-row>
-      <a-row><a-divider>公共场所卫生许可证 </a-divider></a-row>
-      <a-row>
-        <a-radio-group v-model:value="value">
-          <a-radio :style="radioStyle" v-for="item in list.gonggongweisheng" :value="item.url" :key="item.url">{{item.name}}</a-radio>
-        </a-radio-group>
-      </a-row>
+      <a-directory-tree
+        v-model:expandedKeys="expandedKeys"
+        v-model:selectedKeys="selectedKeys"
+        :multiple="false"
+        :tree-data="treeData"
+      ></a-directory-tree>
     </a-col>
     <a-col :span="18">
       <PdfApp style="height: 90vh; width: 100vh" :pdf="pdfurl"></PdfApp>
@@ -34,68 +20,145 @@ import PdfApp from 'vue3-pdf-app';
 import 'vue3-pdf-app/dist/icons/main.css';
 import { ref, watch } from 'vue';
 const pdfurl = ref('/shipin_xinban.pdf');
-const value = ref<string>('');
-const list = ref({
-  shipin: [
-    {
-      name: '新办',
-      url: 'shipin_xinban',
-    },
-    {
-      name: '变更',
-      url: 'shipin_biangeng',
-    },
-    {
-      name: '注销',
-      url: 'shipin_zhuxiao',
-    },
-    {
-      name: '延续',
-      url: 'shipin_yanxu',
-    },
-  ],
-  jiulei: [
-    {
-      name: '新办',
-      url: 'jiulei_xinban',
-    },
-    {
-      name: '变更',
-      url: 'jiulei_biangeng',
-    },
-    {
-      name: '注销',
-      url: 'jiulei_zhuxiao',
-    },
-    {
-      name: '延续',
-      url: 'jiulei_yanxu',
-    },
-  ],
-  gonggongweisheng: [
-    {
-      name: '新办',
-      url: 'ggws_xinban',
-    },
-    {
-      name: '变更',
-      url: 'ggws_biangeng',
-    }, {
-      name: '延续',
-      url: 'ggws_yanxu',
-    },
-    {
-      name: '注销',
-      url: 'ggws_zhuxiao',
-    }]
-});
+
+
+const expandedKeys = ref<string[]>(['0-0', '0-1','0-2','0-3','0-4']);
+const selectedKeys = ref<string[]>([]);
+watch(selectedKeys,(newValue,oldValue)=>{
+  console.log("selected keys=>",selectedKeys)
+  pdfurl.value = `/${selectedKeys.value[0]}.pdf`
+})
+const treeData = [
+  {
+    title: '食品经营许可证',
+    key: '0-0',
+    selectable:false,
+    children: [
+      {
+        title: '新办',
+        key: 'shipin_xinban',
+        isLeaf: true,
+      },
+      {
+        title: '变更',
+        key: 'shipin_biangeng',
+        isLeaf: true,
+      },
+      {
+        title: '延续',
+        key: 'shipin_yanxu',
+        isLeaf: true,
+      },
+      {
+        title: '注销',
+        key: 'shipin_zhuxiao',
+        isLeaf: true,
+      },
+    ],
+  },
+  {
+    title: '酒类经营许可证（零售）',
+    key: '0-1',
+    selectable:false,
+    children: [
+      {
+        title: '新办',
+        key: 'jiuleilingshou_xinban',
+        isLeaf: true,
+      },
+      {
+        title: '变更',
+        key: 'jiuleilingshou_biangeng',
+        isLeaf: true,
+      },
+      {
+        title: '延续',
+        key: 'jiuleilingshou_yanxu',
+        isLeaf: true,
+      },
+      {
+        title: '注销',
+        key: 'jiuleilingshou_zhuxiao',
+        isLeaf: true,
+      },
+    ],
+  },
+  {
+    title: '酒类经营许可证（批发）',
+    key: '0-2',
+    selectable:false,
+    children: [
+      {
+        title: '新办',
+        key: 'jiuleipifa_xinban',
+        isLeaf: true,
+      },
+      {
+        title: '变更',
+        key: 'jiuleipifa_biangeng',
+        isLeaf: true,
+      },
+      {
+        title: '延续',
+        key: 'jiuleipifa_yanxu',
+        isLeaf: true,
+      },
+      {
+        title: '注销',
+        key: 'jiuleipifa_zhuxiao',
+        isLeaf: true,
+      },
+    ],
+  },
+  {
+    title: '特种设备',
+    key: '0-3',
+    selectable:false,
+    children: [
+      {
+        title: '新办',
+        key: 'tezhongshebei_xinban',
+        isLeaf: true,
+      },
+      {
+        title: '复审',
+        key: 'tezhongshebei_fushen',
+        isLeaf: true,
+      }
+    ],
+  },
+  {
+    title: '公共卫生许可证',
+    key: '0-4',
+    selectable:false,
+    children: [
+      {
+        title: '新办',
+        key: 'weisheng_xinban',
+        isLeaf: true,
+      },
+      {
+        title: '变更',
+        key: 'weisheng_biangeng',
+        isLeaf: true,
+      },
+      {
+        title: '延续',
+        key: 'weisheng_yanxu',
+        isLeaf: true,
+      },
+      {
+        title: '注销',
+        key: 'weisheng_zhuxiao',
+        isLeaf: true,
+      },
+    ],
+  },
+];
 const radioStyle = ref({
   display: 'flex',
   height: '30px',
   lineHeight: '30px',
 });
 
-watch(value, (newValue, oldValue) => {
-  pdfurl.value = `/${value.value}.pdf`;
-});
 </script>
