@@ -8,6 +8,7 @@
         v-model:selectedKeys="selectedKeys"
         :multiple="false"
         :tree-data="treeData"
+        :autoExpandParent="false"
       ></a-directory-tree>
     </a-col>
     <a-col :span="18">
