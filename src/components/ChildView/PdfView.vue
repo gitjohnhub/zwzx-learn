@@ -15,6 +15,14 @@
           <a-radio :style="radioStyle" v-for="item in list.jiulei" :value="item.url" :key="item.url">{{item.name}}</a-radio>
         </a-radio-group>
       </a-row>
+
+      <a-row> <a-divider>长宁区卫建委</a-divider> </a-row>
+      <a-row><a-divider>公共场所卫生许可证 </a-divider></a-row>
+      <a-row>
+        <a-radio-group v-model:value="value">
+          <a-radio :style="radioStyle" v-for="item in list.gonggongweisheng" :value="item.url" :key="item.url">{{item.name}}</a-radio>
+        </a-radio-group>
+      </a-row>
     </a-col>
     <a-col :span="18">
       <PdfApp style="height: 90vh; width: 100vh" :pdf="pdfurl"></PdfApp>
@@ -64,6 +72,22 @@ const list = ref({
       url: 'jiulei_yanxu',
     },
   ],
+  gonggongweisheng: [
+    {
+      name: '新办',
+      url: 'ggws_xinban',
+    },
+    {
+      name: '变更',
+      url: 'ggws_biangeng',
+    }, {
+      name: '延续',
+      url: 'ggws_yanxu',
+    },
+    {
+      name: '注销',
+      url: 'ggws_zhuxiao',
+    }]
 });
 const radioStyle = ref({
   display: 'flex',
