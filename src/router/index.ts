@@ -30,11 +30,7 @@ const router = createRouter({
           name: 'Guquanbiangeng',
           component: () => import('@/components/ChildView/GuquanbiangengView.vue'),
         },
-        {
-          path: 'shipinxiazai',
-          name: 'Shipinxiazai',
-          component: () => import('@/components/ChildView/ShipinView.vue'),
-        },
+
       ],
     },
     {
@@ -81,6 +77,11 @@ const router = createRouter({
       path: '/Content',
       name: 'Content',
       component: () => import('@/components/ContentView.vue'),
+    },
+    {
+      path: '/shipinxiazai',
+      name: 'Shipinxiazai',
+      component: () => import('@/components/ChildView/ShipinView.vue'),
     },
     {
       path: '/Shuiwu',
