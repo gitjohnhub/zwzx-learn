@@ -103,13 +103,17 @@ export const useDataStore = defineStore('mydata', () => {
       "id":'https://xk.scjgj.sh.gov.cn/xzxk_wbjg/#/licenceListscjgj?type=00111',
       "name":'仅销售预包装食品备案查询'
     },
-    "zhangchengfanben":{
-      "id":'https://fw.scjgj.sh.gov.cn/shaic/innerDocExamp!toIndex.action',
-      "name":'章程范本'
-    },
     "xinbanqiye":{
       "id":'https://yct.sh.gov.cn/portal_yct/',
-      "name":'新办企业'
+      "name":'企业登记在线'
+    },
+    "zhangchengfanben":{
+      "id":'https://yct.sh.gov.cn/portal_yct/webportal/v2/templateOfApplicationDoucments',
+      "name":'章程范本'
+    },
+    "shuziqianming":{
+      "id":'https://yct.sh.gov.cn/elec/user/toSelectLogin',
+      "name":'数字签名'
     },
     "kuaquqianyi":{
       "id":'https://yct.sh.gov.cn/portal_yct/etpslogin/tips?sysTo=move&redirectUrl=http://yct.sh.gov.cn/bizhallnz_yctnew/transferToYct',
