@@ -30,35 +30,27 @@
   </a-card>
 </template>
 <script lang="ts" setup>
-import { defineComponent, reactive } from 'vue';
+import { ref } from 'vue';
 import { message } from 'ant-design-vue';
-import useAuthUser from '@/auth/useAuthUser';
+import api from '../api/index';
 import { useRouter } from 'vue-router';
-import { useDataStore } from '@/stores/counter';
-const dataStore = useDataStore();
+import { useUserStore } from '@/stores/index';
+const userStore = useUserStore();
 const router = useRouter();
-const user = useAuthUser();
-const formState = {
+const formState = ref({
   username: '',
   password: '',
-};
+});
 
 const login = async () => {
-  if (formState.username == '' || formState.password == '') {
+  if (formState.value.username == '' || formState.value.password == '') {
     message.info('请输入用户名和密码');
   } else {
-    await user.login(formState.username + '@zwzx.com', formState.password).then(res=>{
-      if (res.data.user != null){
-        console.log(res.data.user)
-        user.user.value = res.data.user.email!
-        dataStore.user = res.data.user.email!;
-        console.log("route=>",router)
-        router.push({ name: 'BangbanData' });
-
-      }else {
-        message.info('用户名或密码错误，联系管理员');
-      }
-    })
+    await api.login(formState.value).then((res: any) => {
+      console.log('userInfores=>', res);
+      userStore.saveUserInfo(res);
+      router.push('BangbanData');
+    });
   }
-}
+};
 </script>

@@ -13,6 +13,7 @@
     "@ant-design/icons-vue": "^6.1.0",
     "@supabase/supabase-js": "^2.14.0",
     "ant-design-vue": "^3.2.16",
+    "axios": "^1.7.7",
     "pdfjs-dist": "^3.5.141",
     "pinia": "^2.0.33",
     "vue": "^3.2.47",

@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { supabase } from '@/api/supabase'
-import type {bangban_data_type} from '@/utils/type'
 import useAuthUser from '@/auth/useAuthUser'
 const authUser = useAuthUser()
 export const useDataStore = defineStore('mydata', () => {
