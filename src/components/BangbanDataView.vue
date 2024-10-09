@@ -1,11 +1,9 @@
 <template>
   <a-row>
-    <a-col :span="20">{{ dataStore.user }}</a-col>
+    <a-col :span="20"></a-col>
     <a-col :span="4">
+      {{ userInfo.userInfo.username }}
       <a-button @click="SignOut">登出</a-button>
-    </a-col>
-    <a-col :span="4">
-      <a-button @click="getTodayData">获取今日已填报数据</a-button>
     </a-col>
   </a-row>
   <a-row>
@@ -45,79 +43,77 @@
           </a-col>
         </a-row>
         <a-form-item>
-          <a-button type="primary" @click="submitData"> 提交数据 </a-button>
+          <a-space>
+            <a-button type="primary" @click="submitData"> 提交数据 </a-button>
+            <a-button @click="getTodayData">获取今日已填报数据</a-button>
+          </a-space>
         </a-form-item>
       </a-form>
     </a-card>
   </a-row>
-
-  <a-table :dataSource="dataStore.bangban_data" :columns="columns">
-    <template #bodyCell="{ column, record }">
-      <template v-if="column.key === 'email'">
-        <a-tag :color="record.email == dataStore.user ? 'red' : 'green'">
-          {{ record.email }}
-        </a-tag>
-      </template>
-    </template>
-  </a-table>
-  <a-card title="查询帮办统计数据">
-    <a-space direction="vertical" :size="12">
-      <a-range-picker v-model:value="query_Date" />
+  <a-card title="帮办统计数据">
+    <a-space :size="12">
+      <a-tag color="#f50">{{ count }}</a-tag>
+      <a-config-provider :locale="zhCN">
+        <a-range-picker v-model:value="query_Date"
+        @change="handleMonthRange"
+        />
+      </a-config-provider>
+      <a-select
+    v-model:value="selectedUsers"
+    mode="multiple"
+    style="width: 300px"
+    placeholder="选择用户"
+    :options=options
+    @change="handleSelectedChange"
+  ></a-select>
     </a-space>
-    <a-row>
-      <a-col :span="8" v-for="item in businessSumsByEmail" :key="item.count">
-        <a-statistic :title="item.email" :value="item.count" style="margin-right: 50px" />
-      </a-col>
-    </a-row>
-    <a-table :dataSource="query_Data" :columns="columns"> </a-table>
+    <!-- Database bangban data -->
+    <a-table
+      :columns="columns"
+      :data-source="dataSource"
+      @change="handleChange"
+      @showSizeChange="onShowSizeChange"
+      :pagination="pagination"
+      bordered
+      size="small"
+    >
+    </a-table>
   </a-card>
 </template>
 
 <script setup lang="ts">
-import { useDataStore } from '@/stores/counter';
-import { onBeforeMount, ref, watch } from 'vue';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import dayjs from 'dayjs';
+import { onBeforeMount, ref, computed,watch } from 'vue';
 import { message } from 'ant-design-vue';
 import router from '@/router';
-const dataStore = useDataStore();
-// const today = new Date().toISOString().slice(0,10)
+import api from '@/api';
+import { useUserStore } from '@/stores/index';
+const userInfo = useUserStore();
+const dataSource = ref();
+const formatedDate = new Date();
+const selectedUsers = ref([])
+const options = ref([
+  { value: '秦殷其', label: '秦殷其' },
+  { value: 'lucy', label: 'Lucy' },
+  { value: 'tom', label: 'Tom' },
+]);
+// 业务员变化
+const handleSelectedChange = () => {
+  getData()
+};
+// 日期选择器变化
 const query_Date = ref([]);
-const query_Data = ref();
-const businessSumsByEmail = ref();
-watch(query_Date, (newValue, oldValue) => {
-  businessSumsByEmail.value = {
-    'qinyinqi@zwzx.com': 0,
-    'zhangyi@zwzx.com': 0,
-    'zhaozihao@zwzx.com': 0,
-  };
-  dataStore.querybangban_data(newValue).then((res) => {
-    console.log(res.data);
-    query_Data.value = res.data;
-    businessSumsByEmail.value = getBusinessSumByEmail(res.data);
-  });
-});
-
-function getBusinessSumByEmail(data: any) {
-  const emailCounts = data.reduce((acc, item: any) => {
-    const businessSum = item.business
-      .split(',')
-      .map(Number)
-      .reduce((a: number, b: number) => a + b, 0);
-
-    if (!acc[item.email]) {
-      acc[item.email] = { email: item.email, count: 0 };
-    }
-    if (!acc['all']) {
-      acc['all'] = { email:'all', count: 0 };
-    }
-
-    acc[item.email].count += businessSum;
-    acc['all'].count += businessSum;
-    console.log(acc)
-    return acc;
-  }, {});
-
-  return Object.values(emailCounts);
+const handleMonthRange = ()=>{
+  getData()
 }
+const submitDate =
+  formatedDate.getFullYear().toString() +
+  (formatedDate.getMonth() + 1).toString().padStart(2, '0') +
+  formatedDate.getDate().toString().padStart(2, '0');
+// const today = new Date().toISOString().slice(0,10)
+
 interface FormState {
   biangeng: number;
   shipin: number;
@@ -141,49 +137,52 @@ const formState = ref<FormState>({
   qita2: 0,
 });
 function getTodayData() {
-  console.log(dataStore.todayData[0]?.['business']?.[0]);
-  let arr = dataStore.todayData[0]?.['business']?.split(',');
-  formState.value.biangeng = arr[0] ?? 0;
-  formState.value.shipin = arr[1] ?? 0;
-  formState.value.jiulei = arr[2] ?? 0;
-  formState.value.xinshe = arr[3] ?? 0;
-  formState.value.qita = arr[4] ?? 0;
-  formState.value.shuiwu = arr[5] ?? 0;
-  formState.value.weijianwei = arr[6] ?? 0;
-  formState.value.wenlv = arr[7] ?? 0;
-  formState.value.qita2 = arr[8] ?? 0;
+  api
+    .getBangbanData({ submitDate: submitDate, email: userInfo.userInfo.username })
+    .then((res: any) => {
+      console.log(res.rows);
+      if (res.rows.length > 0) {
+        let arr = res.rows[0]?.['business']?.split(',');
+        formState.value.biangeng = arr[0] ?? 0;
+        formState.value.shipin = arr[1] ?? 0;
+        formState.value.jiulei = arr[2] ?? 0;
+        formState.value.xinshe = arr[3] ?? 0;
+        formState.value.qita = arr[4] ?? 0;
+        formState.value.shuiwu = arr[5] ?? 0;
+        formState.value.weijianwei = arr[6] ?? 0;
+        formState.value.wenlv = arr[7] ?? 0;
+        formState.value.qita2 = arr[8] ?? 0;
+      }
+    });
 }
+
 function submitData() {
   const business = [];
   let key: keyof FormState;
   for (key in formState.value) {
-    console.log(formState.value[key]);
-    formState.value[key] = formState.value[key] == '' ? 0 : formState.value[key];
+    // formState.value[key] = formState.value[key] == 0 ? 0 : formState.value[key];
     business.push(formState.value[key]);
   }
   const business_str = business.join(',');
-  const submitDate = new Date().toLocaleDateString();
-  const submitData = { business: business_str, submitDate: submitDate, id: 0 };
-  if (dataStore.isTodayDataExists() == null) {
-    console.log('insert');
-    dataStore.insertBangban_data(submitData).then((res) => {
-      message.info('上报成功');
-    });
-  } else {
-    console.log('update');
-    submitData['id'] = dataStore.isTodayDataExists() as number;
-    dataStore.updateBangban_data(submitData).then((res) => {
-      message.info('今日数据更新成功');
-    });
-  }
-  dataStore.getBangban_data();
+
+  const dataToSubmit = {
+    business: business_str,
+    submitDate: submitDate,
+    email: userInfo.userInfo.username,
+  };
+  api.addBangbanData(dataToSubmit).then((res) => {
+    message.info('上报成功');
+    getData();
+  });
 }
 function SignOut() {
-  dataStore.signOut();
-  router.push({ name: 'Login' });
+  userInfo.logout();
+  router.push('Login');
 }
 const labelCol = { style: { width: '80px' } };
 const wrapperCol = { span: 20 };
+const count = ref<number>();
+
 const columns = [
   {
     title: 'id',
@@ -191,30 +190,74 @@ const columns = [
     key: 'id',
   },
   {
-    title: 'business',
+    title: '业务',
     dataIndex: 'business',
     key: 'business',
   },
   {
-    title: 'submitDate',
+    title: '提交时间',
     dataIndex: 'submitDate',
     key: 'submitDate',
-    sorter: (a: any, b: any) => new Date(a.submitDate) > new Date(b.submitDate),
-    sortDirections: ['descend'],
-    defaultSortOrder: 'descend',
   },
   {
-    title: 'user',
+    title: '用户',
     dataIndex: 'email',
     key: 'email',
   },
 ];
 onBeforeMount(() => {
   getData();
+  console.log('userInfo===>', userInfo.userInfo.username);
 });
-async function getData() {
-  await dataStore.getBangban_data();
-}
+// 分页
+const pager = ref({
+  current: 1,
+  pageSize: 10,
+  total: 0,
+});
+const handleChange = async (page: any) => {
+  pager.value = page;
+  getData();
+};
+const pagination = computed(() => {
+  return {
+    ...pager.value,
+    change: handleChange,
+  };
+});
+
+const onShowSizeChange = async (page: any) => {};
+
+const getData = async (params?: any) => {
+
+  params = {
+    ...params,
+    ...pager.value,
+  };
+  if(selectedUsers.value.length > 0){
+    params.selectedUsers = selectedUsers.value
+  }
+    // console.log(query_Date.value)
+  if (query_Date.value !== null ){
+    const startDate = dayjs(query_Date.value[0]).format('YYYYMMDD');
+    const endDate = dayjs(query_Date.value[1]).format('YYYYMMDD');
+    console.log(startDate,endDate);
+    params.monthRange = [startDate,endDate]
+  }else{
+    params.monthRange = null
+  }
+  return await api.getBangbanData(params).then((res: any) => {
+    pager.value = res.page;
+    count.value = pager.value.total;
+    dataSource.value = res.rows.map((item: any) => {
+      return {
+        editVisible: false,
+        ...item,
+      };
+    });
+    return res.rows;
+  });
+};
 </script>
 
 <style scoped></style>

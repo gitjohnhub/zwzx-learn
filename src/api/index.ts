@@ -13,11 +13,11 @@ export default {
     return POST('/users/addUser', params);
   },
 
-  getDutyData(params?: any) {
-    return POST('/getDutyData', params);
+  getBangbanData(params?: any) {
+    return POST('/getBangbanData', params);
   },
-  addDutyData(params?: any) {
-    return POST('/addDutyData', params);
+  addBangbanData(params?: any) {
+    return POST('/addBangbanData', params);
   },
   updateDutyData(params?: any) {
     return POST('/updateDutyData', params);

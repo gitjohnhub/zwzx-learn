@@ -9,10 +9,10 @@
     >
       <a-form-item
         label="邮箱"
-        name="username"
-        :rules="[{ required: false, message: 'Please input your username!' }]"
+        name="account"
+        :rules="[{ required: false, message: 'Please input your account!' }]"
       >
-        <a-input v-model:value="formState.username" suffix="@zwzx.com" />
+        <a-input v-model:value="formState.account" suffix="@zwzx.com" />
       </a-form-item>
 
       <a-form-item
@@ -38,12 +38,12 @@ import { useUserStore } from '@/stores/index';
 const userStore = useUserStore();
 const router = useRouter();
 const formState = ref({
-  username: '',
+  account: '',
   password: '',
 });
 
 const login = async () => {
-  if (formState.value.username == '' || formState.value.password == '') {
+  if (formState.value.account == '' || formState.value.password == '') {
     message.info('请输入用户名和密码');
   } else {
     await api.login(formState.value).then((res: any) => {
