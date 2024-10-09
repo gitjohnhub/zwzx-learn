@@ -51,7 +51,8 @@
       </a-form>
     </a-card>
   </a-row>
-  <a-card title="帮办统计数据">
+ <!-- 帮办详细数据 -->
+  <a-card title="帮办详细数据">
     <a-space :size="12">
       <a-tag color="#f50">{{ count }}</a-tag>
       <a-config-provider :locale="zhCN">
@@ -80,6 +81,14 @@
     >
     </a-table>
   </a-card>
+    <!-- 帮办统计卡片 -->
+    <a-list :grid="{ gutter: 16, column: 4 }" :data-source="businessSummary">
+    <template #renderItem="{ item }">
+      <a-list-item>
+        <a-card :title="item.email">{{item.businessSummary}}</a-card>
+      </a-list-item>
+    </template>
+  </a-list>
 </template>
 
 <script setup lang="ts">
@@ -94,11 +103,15 @@ const userInfo = useUserStore();
 const dataSource = ref();
 const formatedDate = new Date();
 const selectedUsers = ref([])
-const options = ref([
-  { value: '秦殷其', label: '秦殷其' },
-  { value: 'lucy', label: 'Lucy' },
-  { value: 'tom', label: 'Tom' },
-]);
+const users  = ["qinyinqi",
+"yuanjiajie",
+"zhangyi",
+"lingying",
+"konglingtao",
+"huangyurou",
+"tangruijia",
+"zhaozihao"]
+const options = users.map(user=>({value:user,label:user}))
 // 业务员变化
 const handleSelectedChange = () => {
   getData()
@@ -223,11 +236,10 @@ const pagination = computed(() => {
     change: handleChange,
   };
 });
-
 const onShowSizeChange = async (page: any) => {};
 
+const businessSummary = ref([])
 const getData = async (params?: any) => {
-
   params = {
     ...params,
     ...pager.value,
@@ -243,8 +255,8 @@ const getData = async (params?: any) => {
   }else{
     params.monthRange = null
   }
-  api.getBusinessSummaryByEmail(params).then(res=>{
-    console.log('getBusinessByEmail',res)
+  api.getBusinessSummaryByEmail(params).then((res:any)=>{
+    businessSummary.value = res
   })
   return await api.getBangbanData(params).then((res: any) => {
     pager.value = res.page;
