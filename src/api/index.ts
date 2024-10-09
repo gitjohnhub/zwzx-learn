@@ -19,7 +19,7 @@ export default {
   addBangbanData(params?: any) {
     return POST('/addBangbanData', params);
   },
-  updateDutyData(params?: any) {
-    return POST('/updateDutyData', params);
+  getBusinessSummaryByEmail(params?: any) {
+    return POST('/getBusinessSummaryByEmail', params);
   },
 };

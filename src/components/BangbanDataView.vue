@@ -104,7 +104,7 @@ const handleSelectedChange = () => {
   getData()
 };
 // 日期选择器变化
-const query_Date = ref([]);
+const query_Date = ref(null);
 const handleMonthRange = ()=>{
   getData()
 }
@@ -140,7 +140,6 @@ function getTodayData() {
   api
     .getBangbanData({ submitDate: submitDate, email: userInfo.userInfo.username })
     .then((res: any) => {
-      console.log(res.rows);
       if (res.rows.length > 0) {
         let arr = res.rows[0]?.['business']?.split(',');
         formState.value.biangeng = arr[0] ?? 0;
@@ -207,7 +206,6 @@ const columns = [
 ];
 onBeforeMount(() => {
   getData();
-  console.log('userInfo===>', userInfo.userInfo.username);
 });
 // 分页
 const pager = ref({
@@ -237,7 +235,6 @@ const getData = async (params?: any) => {
   if(selectedUsers.value.length > 0){
     params.selectedUsers = selectedUsers.value
   }
-    // console.log(query_Date.value)
   if (query_Date.value !== null ){
     const startDate = dayjs(query_Date.value[0]).format('YYYYMMDD');
     const endDate = dayjs(query_Date.value[1]).format('YYYYMMDD');
@@ -246,6 +243,9 @@ const getData = async (params?: any) => {
   }else{
     params.monthRange = null
   }
+  api.getBusinessSummaryByEmail(params).then(res=>{
+    console.log('getBusinessByEmail',res)
+  })
   return await api.getBangbanData(params).then((res: any) => {
     pager.value = res.page;
     count.value = pager.value.total;
