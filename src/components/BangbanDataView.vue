@@ -55,6 +55,7 @@
   <a-card title="帮办详细数据">
     <a-space :size="12">
       <a-tag color="#f50">{{ count }}</a-tag>
+      <a-tag color="blue">{{ total }}</a-tag>
       <a-config-provider :locale="zhCN">
         <a-range-picker v-model:value="query_Date"
         @change="handleMonthRange"
@@ -237,7 +238,7 @@ const pagination = computed(() => {
   };
 });
 const onShowSizeChange = async (page: any) => {};
-
+const total = ref(0)
 const businessSummary = ref([])
 const getData = async (params?: any) => {
   params = {
@@ -257,6 +258,11 @@ const getData = async (params?: any) => {
   }
   api.getBusinessSummaryByEmail(params).then((res:any)=>{
     businessSummary.value = res
+    console.log('businessSummary==>',res)
+    total.value = res.reduce((acc:any, cur:any)=>{
+      return acc += Number(cur.businessSummary)
+    },0)
+    console.log("total",total.value)
   })
   return await api.getBangbanData(params).then((res: any) => {
     pager.value = res.page;
