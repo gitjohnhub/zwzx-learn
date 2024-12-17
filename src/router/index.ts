@@ -30,7 +30,6 @@ const router = createRouter({
           name: 'Guquanbiangeng',
           component: () => import('@/components/ChildView/GuquanbiangengView.vue'),
         },
-
       ],
     },
     {
@@ -57,7 +56,7 @@ const router = createRouter({
           path: 'Shipinxinban',
           name: 'Shipinxinban',
           component: () => import('@/components/ChildView/ShipinxinbanView.vue'),
-          redirect:'/Fanben/Shipinxinban/Step-1',
+          redirect: '/Fanben/Shipinxinban/Step-1',
           children: [
             {
               path: 'Step-1',
@@ -68,7 +67,7 @@ const router = createRouter({
               path: 'Step-2',
               name: 'Shipin-Step-2',
               component: () => import('@/components/ChildView/Shipinxinban/Step-2.vue'),
-            }
+            },
           ],
         },
       ],
@@ -92,6 +91,11 @@ const router = createRouter({
       path: '/Weijianwei',
       name: 'Weijianwei',
       component: () => import('@/components/WeijianweiView.vue'),
+    },
+    {
+      path: '/Rensheju',
+      name: 'Rensheju',
+      component: () => import('@/components/RenshejuView.vue'),
     },
     {
       path: '/Minzhen',
@@ -121,7 +125,6 @@ const router = createRouter({
     },
   ],
 });
-
 
 router.beforeEach((to) => {
   // const user = JSON.parse(localStorage.getItem('user'))

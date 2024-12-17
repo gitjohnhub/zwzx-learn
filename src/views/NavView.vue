@@ -21,8 +21,12 @@
         <RouterLink to="/Content"><a-menu-item key="2">办理指引</a-menu-item></RouterLink>
         <RouterLink to="/Shipinxiazai"><a-menu-item key="3">指导视频</a-menu-item></RouterLink>
       </a-menu-item-group>
+      <a-menu-item-group key="g5" title="人社局">
+        <!-- <a-menu-item key="4">Option 3</a-menu-item> -->
+        <RouterLink to="/Rensheju"><a-menu-item key="5">直达链接</a-menu-item></RouterLink>
+      </a-menu-item-group>
 
-       <!-- 税务直达链接 -->
+      <!-- 税务直达链接 -->
       <!-- <a-menu-item-group key="g2" title="税务局">
         <RouterLink to='/Shuiwu'><a-menu-item key="4">直达链接</a-menu-item></RouterLink>
       </a-menu-item-group> -->
@@ -32,7 +36,7 @@
       </a-menu-item-group>
       <a-menu-item-group key="g4" title="民政">
         <!-- <a-menu-item key="3">Option 3</a-menu-item> -->
-        <RouterLink to="/Minzhen"><a-menu-item key="4">直达链接</a-menu-item></RouterLink>
+        <RouterLink to="/Minzhen"><a-menu-item key="6">直达链接</a-menu-item></RouterLink>
       </a-menu-item-group>
     </a-sub-menu>
 
